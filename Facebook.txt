@@ -1,0 +1,5 @@
+﻿https://developers.facebook.com/tools/explorer:
+
+100001572555279?fields=friends.fields(id,birthday,email,first_name,gender,hometown,last_name,location,locale,name,quotes,username,albums.limit(100).fields(count,name,likes.fields(name),comments.fields(from,like_count,user_likes)),activities.fields(likes,name,website,talking_about_count),family.fields(username,id))
+
+BAACEdEose0cBAEqxrZAhFkTDl5edkhvZBZC3VvQsmYrA3v2tXsuiP5ZBgMS0PQQ3o5fBw9vY1akLNquknbKUd7EY9Hz4DQe3UIM7QyA1qQef9bSxWTeZC2FDciYozcthA762vz1YFqNV8PjwB6RIdHtAEKAHkmRb45xWzfpiiM7ELNqxXcl1KY7LggJWhlQqdKP8Mocan3NToKb6wZAigpEINtQ6oJVnyfRsiNRPZC0JQZDZD

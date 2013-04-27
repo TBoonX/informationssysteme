@@ -1,0 +1,12 @@
+Datenquelle:
+Facebook Graph
+Wochentage und Feiertage
+
+grapper:
+JavScript server oder clientseitig
+
+DB:
+MongoDB
+
+Auswertung:
+JavaScript
