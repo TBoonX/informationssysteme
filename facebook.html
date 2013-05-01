@@ -1,0 +1,128 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+	<title>Facebook public data getter</title>
+</head>
+<body>
+	<h1>Seite gettet ein paar daten von usern mit zufälliger ID.<br>...</h1>
+
+	<br>
+	Anzahl falsche ID's:
+	<div id="error">0</div>
+	
+	<br>
+	Anzahl leerer Profile:
+	<div id="empty">0</div>
+	
+	<br>
+	Anzahl korrekter Antworten:<br>
+	<div id="correct">0</div>
+	
+	<br>
+	---------------------------------<br>
+	
+	<br>
+	Pics:
+	<br>
+	<div id=pics></div>
+	
+	<script type="text/javascript">
+		//URL
+		var base = 'https://graph.facebook.com/';
+		var tail = '?fields=id,name,first_name,last_name,username,birthday,about,address,bio,picture,work,hometown,gender,website,link,locale';
+		var extra = '&method=GET&format=json&access_token=151684371672844|dPOEz7OHnmAR2JAVjz5mIJUiuns';
+		var startID = 500000000;
+		
+		//globale Variablen
+		errors = 0;
+		correct = 0;
+		empty = 0;
+		
+		n = 1000;
+		jsons = new Array();
+		
+		//Loop
+		for (var i = 0; i < n; i++)
+		{
+			//Request erzeugen
+			request = new XMLHttpRequest();
+			//Bei Statusänderung callback ausführen
+			request.onload = function() {
+				console.log('new response:');
+				console.log(this);
+				
+				//Nur wenn Done
+		        if (this.readyState == 4)
+		        {
+		            callback(this);
+		        }
+			};
+			
+			//URL zusammenbasteln
+			var url = base+(startID+i)+tail+extra;
+			console.log(i+': URL: '+url);
+			
+			//request mit url konfigurieren
+			request.open('GET', url, true);
+			
+			//Sende Request
+			request.send(null);
+		    
+		   
+		};
+		
+		//Callback - für asynchronen request
+		function callback(request)
+		{
+			//Antwort zu Objekt parsen
+			//bei Fehler Abbruch
+			try {
+				//console.log(request.response);
+				var json = JSON.parse(request.responseText);
+				//in Array schieben
+				jsons.push(json);}
+            catch (e) {
+            	console.log(e);
+            	//Fehler aufaddieren und ausgabe aktualisieren
+            	errors++;
+            	document.getElementById('error').innerHTML = errors;
+        		return;
+        	}
+            
+            //Ist dieses Attribut true, handelt es sich um ein leeren Profil
+            if (json.picture.data.is_silhouette)
+            {
+            	empty++;
+            	document.getElementById('empty').innerHTML = empty;
+            	return;
+            }
+            
+            //Ansonsten ist das Profil benutzbar
+            correct++;
+            document.getElementById('correct').innerHTML = correct;
+            
+            //Bild anzeigen
+            var pic = document.createElement("img");
+            pic.id = 'pic'+correct;
+            //pic.src = json.picture.data.url;
+            
+            //Einzelne Attribute für Ausgabe aufbereiten
+            var sb = '';
+            for (var k in json)
+            {
+            	sb = sb+k+': '+json[k].toString()+'<br>';
+            }
+            
+            //Attribute
+            var div = document.createElement("div");
+            div.innerHTML = sb+'<br><br>';
+            div.id = 'picdiv'+correct;
+            
+            //Anzeigen
+            document.getElementById('pics').appendChild(pic);
+            document.getElementById('pics').appendChild(div);
+		}
+	</script>
+</body>
+</html>

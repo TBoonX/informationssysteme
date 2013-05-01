@@ -1,12 +1,17 @@
 Datenquelle:
 Facebook Graph
 Wochentage und Feiertage
+Wetter (aus CSV Dateien)
 
-grapper:
-JavScript server oder clientseitig
-
-DB:
+Staging area:
 MongoDB
 
+Grapper:
+JavaScript server- oder clientseitig
+oder Pentaho
+
+DB in Data warehouse:
+MySQL/MariaDB
+
 Auswertung:
-JavaScript
+JavaScript oder Pentaho

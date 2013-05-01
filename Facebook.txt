@@ -5,3 +5,7 @@
 
 
 https://developers.facebook.com/
+
+
+
+http://graph.facebook.com/674275361?fields=id,name,first_name,last_name,username,birthday,about,address,bio,picture,work,hometown,gender,website,link,locale
