@@ -8,6 +8,7 @@ in 2 Wochen:
 - Architektur entwerfen und darstellen
 - ERM/UML für Quellen und Data Warehouse erstellen
 - Analysen beschreiben
+- 5-10 Seiten Dokument erstellen
 
 später:
 - in Datenbank schreiben und konsistenz prüfen
