@@ -5,7 +5,11 @@
 
 //(einfache) Attribute der Freunde
 fields=friends.limit(30).fields(id,birthday,first_name,gender,hometown,last_name,location,locale,name,quotes,username,devices,work)
+relationship_status
 
+//öffentliche daten nach filter
+https://graph.facebook.com/search?limit=3&fields=id,likes.limit(3),statuses.limit(3),checkins.limit(3),posts.limit(3),name,address,first_name,last_name,username,birthday,address,picture,hometown,gender,locale,locations,relationship_status&q=james&type=user&access_token=BAAAAAITEghMBAO6hBArdnjoE8x95fmlv9s8kZBZBKkOt3ZBL6G7hCRTSssql1GNJADmRskljBxtZAbL2nPi2Mmgr97IBDfKF2EC7zBqfeZATiLsftKyw7NpwZAdxDIKz5ECNZCPlh2YD86lwQ2IkFKEAZBMDxbWp0Y3VITblNTPfVT3nP3wayWhTIiaHkwd5y7XMg0BpyZC9e8Up2hp0PGT6tZB2DEuJZCY9ireq3ZCacW7xkQZDZD&limit=25&until=1367845138
+https://graph.facebook.com/search?limit=3&fields=id,likes.limit(3),statuses.limit(3),checkins.limit(3),posts.limit(3),name,address,first_name,last_name,username,birthday,address,picture,hometown,gender,locale,locations,relationship_status&q=james&type=user&access_token=BAACEdEose0cBAGLhJHZAEI7jWlBviEGu4Y4ZBTG10M2PAVTDX7dBcvHwfZBoGkFFrf7m1KqssyNwIXkKfqLDNyRML9bDKmUo6Xc60eZCILtILGIHZBE5FZBgqZBZCI4KkUTorSJqdNQsPeeU5bL4MRu3wgDeUZAkH6n0iL9QIm0MJXwxDGPljFTvXe4dkvn8KvQnUJcVlxMCjFLJZBAnz05kGZCbqsOS6O8PwdUTrSOMlDI6AZDZD&limit=25&until=1367845138
 
 
 https://developers.facebook.com/
