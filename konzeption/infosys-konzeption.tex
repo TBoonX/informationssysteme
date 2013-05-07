@@ -1,0 +1,267 @@
+%Wir verwenden eine DIN-A4-Seite und die Schriftgröße 12.
+\documentclass[a4paper,12pt]{scrartcl} 
+
+
+%Diese drei Pakete benötigen wir für die Umlaute, Deutsche Silbentrennung etc.
+%Apple-Nutzer sollten anstelle von \usepackage[latin1]{inputenc} das Paket \usepackage[applemac]{inputenc} verwenden
+%% \usepackage[latin1]{inputenc}
+%%apt-get install texlive-lang-german damit ngerman keine Probleme mehr macht !!
+%\usepackage[utf8]{inputenc} 
+%\usepackage[T1]{fontenc}
+%\usepackage[ngerman]{babel}
+
+%Das Paket erzeugt ein anklickbares Verzeichnis in der PDF-Datei.
+%\usepackage{hyperref}
+
+%Das Paket wird für die anderthalb-zeiligen Zeilenabstand benötigt
+\usepackage{setspace}
+
+%%HTWM-Vorlage - benoetigt apt-get install texlive-fonts-extra
+\setcounter{tocdepth}{3}				%Schatelungstiefe Inhaltsverz.
+\usepackage[utf8]{inputenc}			%deutsche Umlaute
+\usepackage{german, ngerman}
+\usepackage[ngerman]{babel}			%Rechtschreibprüfung
+\usepackage{color,listings} 			%Quellcode Highlighting, bindet das
+%Paket Listings ein
+\usepackage{listings}
+\usepackage{color}
+\usepackage{textcomp}
+\usepackage[T1]{fontenc}				%srccode
+\usepackage[scaled]{beramono}		%srccode
+\usepackage{longtable}				%mehrseitige tabellen
+\usepackage[tableposition=b]{caption}
+\usepackage[pdftex, pdftoolbar=false, hyperfootnotes=false, bookmarks,
+bookmarksopen, bookmarksnumbered, bookmarksopenlevel=2, pdfpagelabels=true,
+pdfstartpage=3, pdfstartview=FitH,]{hyperref} %Verlinkungen
+\usepackage{array}					%farbige Tabellen
+\usepackage[table]{xcolor} 			%farbige Tabellen
+\usepackage{graphicx}				% \includegraphics bnoetigt dies
+%%\usepackage{subfigure} 				%% Bilder nebeneinander einfuegen
+
+\usepackage{fancyhdr, graphicx}		%% Logo auf Titelseite
+\renewcommand{\headrulewidth}{0pt}
+\fancyhead[L]{}
+\fancyhead[R]{
+  \includegraphics[width=52mm]{./images/htwk.png}
+}
+
+%\usepackage{draftwatermark}			% wasserzeichen
+	%Quelle: http://choorucode.com/2010/05/05/latex-adding-draft-watermark/?like=1&source=post_flair&_wpnonce=1c9f85538d
+%\SetWatermarkText{VORABVERSION}		% wasserzeichen-text
+%\SetWatermarkLightness{0.9}			% wasserzeichen-kontrast
+%\SetWatermarkScale{2.5}				% wasserzeichen-zeichengroe\ss{}e
+
+\usepackage{float}					% Bilder mittels H-Paramter genau positionieren
+\restylefloat{figure}				% Bilder mittels H-Paramter genau positionieren
+
+
+\definecolor{Navy}{rgb}{0,0,0.5}
+\definecolor{Gray}{gray}{0.5}
+\definecolor{dunkelgrau}{rgb}{0.8,0.8,0.8}
+\definecolor{hellgrau}{rgb}{0.95,0.95,0.95}
+\definecolor{hellgrau2}{rgb}{0.93,0.93,0.93}
+
+\hypersetup{
+	colorlinks=true, 			% false: boxed links; true: colored links
+	linkcolor=Navy,          		% color of internal links
+	citecolor=Gray,        			% color of links to bibliography
+	filecolor=magenta,      		% color of file links
+	urlcolor=blue,           		% color of external links
+	linkbordercolor={1 1 1}, 		% set to white
+	citebordercolor={1 1 1} 		% set to white
+}
+
+
+%Einrückung eines neuen Absatzes
+\setlength{\parindent}{0em}
+
+%Definition der Ränder
+\usepackage[paper=a4paper,left=30mm,right=30mm,top=30mm,bottom=30mm]{geometry}
+
+%Abstand der Fussnoten
+\deffootnote{1em}{1em}{\textsuperscript{\thefootnotemark\ }}
+
+%Regeln, bis zu welcher Tiefe (section,subsection,subsubsection) Überschriften angezeigt werden sollen (Anzeige der Überschriften im Verzeichnis / Anzeige der Nummerierung)
+%\setcounter{tocdepth}{3}
+%\setcounter{secnumdepth}{3}
+
+\fancypagestyle{htwkheader}
+{
+  \fancyhf{}	% clear all header and footer fields
+    \fancyhead[RO]{
+	\makebox[\textwidth]{	%% schiebe Logo nach aussen auf den Rand
+		\rule{0.9				%% nach aussen schieben hoeherer Wert -> Logo weiter nach aussen
+		  \textwidth}{0cm} %% nicht nach unten schieben = 0cm
+			\includegraphics*[width=52mm]{./images/htwk.png}	%%Logo HTWK
+	  }
+  }
+}
+
+
+\begin{document}
+%Beginn der Titelseite
+
+\begin{titlepage}
+%%\thispagestyle{htwkheader}		
+%\addtolength{\voffset}{-2cm}		
+%\addtolength{\topmargin}{-2cm}
+%\addtolength{\bottommargin}{2cm}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%  Oberer Teil: Links Textblock HTWK, Rechts Logo HTWK %%
+%%\begin{figure}[htbp]
+%%\begin{minipage}[t]{6cm}	%% linker Teil
+%%\vspace{0cm}
+HTWK Leipzig\\
+Fachbereich IMN \\
+Sommersemester 2013
+%%\end{minipage}
+%%\hfill						%% Zwischenraum auffuellen
+%%\begin{minipage}[t]{6cm}	%% rechter Teil
+%%\vspace{0pt}
+%%\makebox[\textwidth]{	%% schiebe Logo nach aussen auf den Rand
+%%  \rule{1				%% nach aussen schieben hoeherer Wert -> Logo weiter nach aussen
+%%    \textwidth}{0cm} %% nicht nach unten schieben = 0cm
+%%      \includegraphics*[width=52mm]{./images/htwk.png}	%%Logo HTWK
+%%}
+
+%%  \end{flushright}
+%%\caption{Bild1}			%% keine Bildbeschriftung fuer Logo
+%%\label{fig:Bild1}			%% nicht ins Abbildungsverzeichnis aufnehmen
+%%\end{minipage}
+%%\end{figure}
+
+%\vspace{6cm}
+
+%\addtolength{\voffset}{0cm}
+
+\begin{center}
+\begin{Large}
+\vfill {\textsf{\textbf{
+Beleg im Fach Informationssysteme\\
+}}}
+\end{Large}
+Konzeption
+\end{center}
+
+\begin{small}
+\vfill
+Kurt Junghanns, B.Sc.\\
+Philip-Rosenthal-Stra\ss{}e 32\\
+04277 Leipzig\\
+kurt.junghanns@stud.htwk-leipzig.de\\
+\\
+Marcel Kirbst, B.Sc.\\
+Sieglitz 39 \\
+06618 Molau \\
+marcel.kirbst@stud.htwk-leipzig.de\\
+\\
+\today
+\end{small}
+
+\end{titlepage}
+\addtolength{\voffset}{0cm}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%Ende der Titelseite%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%Inhaltsverzeichnis (aktualisiert sich erst nach dem zweiten Setzen)
+\tableofcontents
+
+%Beginn einer neuen Seite
+\clearpage
+
+%Anderthalbzeiliger Zeilenabstand ab hier
+\onehalfspacing
+
+%%\pagestyle{plain}
+%\pagestyle{headings}	%% lebende Kopfzeile
+
+%%Abbildungsverzeichnis hier erstellen
+\clearpage
+\listoffigures
+
+\clearpage
+\section{Einleitung}
+%%\pagestyle{empty}
+Ziel dieses Belegs ist die Estellung eines Data Warehouse. Als Datenquellen dienen dabei das soziale Netzwerk Facebook, Geodaten von OpenStreetMap sowie Wetterdaten. Ziel ist die Gewinnung neuer Aussagen anhand der Korrelation dieser Daten.
+
+\clearpage
+\section{Beschreibung der Datenquellen}
+
+\subsection{Facebook-API}
+\subsection{OpenStreetMap}
+\subsection{Weather-API}
+\subsection{Wetterstationen}
+
+
+\section{Architektur des aufzubauenden Data Warehouse}
+
+\section{Datenbankschemata}
+
+\section{Beschreibung der anvisierten Analysen}
+
+%\clearpage
+%\section{Glossar}
+%\begin{description}
+% \item[I2C] Prtokoll zur Kommunikation in Ger\"aten
+%\end{description}
+
+\clearpage
+\section{Literatur- und Quellenverzeichnis}
+
+\renewcommand\refname{Literaturverzeichnis}
+\begin{thebibliography}{999}
+
+%%\bibitem{buch_foobar}Michael W. Lucas:  {\sl Absolute BSD (2nd Edition). The Ultimate Guide to FreeBSD.} No Starch Press, 2008,
+%%\\ISBN: 978-1-59327-151-0
+
+\end{thebibliography}
+
+\renewcommand\refname{Quellenverzeichnis}
+\begin{thebibliography}{999}
+
+%%\cite{citeverweis}
+\bibitem{speci2c}
+\url{http://www.nxp.com/documents/user_manual/UM10204.pdf}
+\\Abrufbar am 10.03.2013
+
+\bibitem{spec1wire}
+\url{http://www.1wire.org}
+\\Abrufbar am 10.03.2013
+
+\bibitem{specled}
+\url{http://www.osram-os.net/osram_os/CN/Downloads/Solid_State_Lighting/documents/LUW_W5AM_Pb-free_C_final.pdf}
+\\Abrufbar am 10.03.2013
+
+\bibitem{specpwm}
+\url{http://www.nxp.com/documents/data_sheet/PCA9685.pdf}
+\\Abrufbar am 11.03.2013
+
+\bibitem{speclpc1768}
+\url{http://www.nxp.com/documents/data_sheet/LPC1769_68_67_66_65_64_63.pdf}
+\\Abrufbar am 11.03.2013
+
+\bibitem{specminilux}
+\url{http://www.mx-electronic.com/pdf/Bedienungsanleitungdeu.PDF}
+\\Abrufbar am 11.03.2013
+
+\bibitem{specds1820}
+\url{http://www.systronix.com/Resource/ds1820.pdf}
+\\Abrufbar am 11.03.2013
+
+\end{thebibliography}
+
+\clearpage
+\section{Verzichtserkl\"arung}
+\thispagestyle{plain}
+
+Hiermit erkläre ich, dass ich die vorliegende Arbeit selbstständig und nur unter Verwendung der angegebenen Literatur und Hilfsmittel angefertigt habe.
+Stellen, die wörtlich oder sinngemäß aus Quellen entnommen wurden, sind als solche
+kenntlich gemacht.\\
+
+Diese Arbeit wurde in gleicher oder ähnlicher Form noch keiner anderen Prüfungsbehörde vorgelegt.\\\\
+
+Leipzig, \today
+\end{document}
+%% EOF
