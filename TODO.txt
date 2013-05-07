@@ -1,16 +1,6 @@
 ﻿TODO:
 ------------
-in 2 Wochen:
-- Facebook querys zusammenstellen
-- Wetterdaten (grob pro Bundesland oder so) Zugriff suchen
-- Möglichkeit/Funktion zu Timestamp Wochentag und Feiertag suchen
-- ERM zeichnen
-- Architektur entwerfen und darstellen
-- ERM/UML für Quellen und Data Warehouse erstellen
-- Analysen beschreiben
-- 5-10 Seiten Dokument erstellen
 
-später:
 - in Datenbank schreiben und konsistenz prüfen
 - ETL mit Spoon bauen
 - Rel DB aufsetzen und einrichten
