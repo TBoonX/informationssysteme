@@ -1,0 +1,8 @@
+Sieglitz/Molau:
+oben links:		51.068,11.749
+oben rechts:	51.068,11.765
+unten links:	51.06,11.749
+unten rechts:	51.06,11.765
+
+lat,lon->cityname
+http://overpass-api.de/api/interpreter?data=[out:json];node(51.06,11.749,51.068,11.765);out;
