@@ -97,6 +97,16 @@ pdfstartpage=3, pdfstartview=FitH,]{hyperref} %Verlinkungen
   }
 }
 
+\makeatletter
+\def\ScaleIfNeeded{%
+\ifdim\Gin@nat@width>\linewidth
+\linewidth
+\else
+\Gin@nat@width
+\fi
+}
+\makeatother
+
 
 \begin{document}
 %Beginn der Titelseite
@@ -191,7 +201,27 @@ Ziel ist die Gewinnung neuer Aussagen anhand der Korrelation dieser Daten.
 \section{Beschreibung der Datenquellen}
 
 \subsection{Facebook-API}
+
+Facebook bietet für Entwickler APIs zur Abfrage öffentlicher Profildaten an.
+Mit einem eindeutigen Schlüssel ist es möglich diese Daten per HTTP abzufragen.\\
+Die Daten werden im JSON-Format ausgeliefert.
+
+\begin{center}
+\centering
+\includegraphics[width=\ScaleIfNeeded]{../user.pdf}%
+\captionof{figure}[Facebook Nutzerdaten]{Facebook öffentliche Nutzerdaten}%
+\end{center}
+
+Abbildung 1 deutet den Charakter der zu erhaltenten Daten an.\\
+Die aufgeführten Attribute und Entitäten sind für die Auswertung essentiell. Die Entitäten und deren Attribute sind jedoch optinal.\\
+Aus diesem Grund sollen im ETL-Prozess nur Datensätze mit vorhandenen Entitäten und Attributen ausgewertet werden.
+
+
 \subsection{OpenStreetMap}
+
+
+
+
 \subsection{Weather-API}
 \subsection{Wetterstationen}
 
