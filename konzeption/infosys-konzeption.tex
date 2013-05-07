@@ -213,12 +213,23 @@ Die Daten werden im JSON-Format ausgeliefert.
 \end{center}
 
 Abbildung 1 deutet den Charakter der zu erhaltenten Daten an.\\
-Die aufgeführten Attribute und Entitäten sind für die Auswertung essentiell. Die Entitäten und deren Attribute sind jedoch optinal.\\
-Aus diesem Grund sollen im ETL-Prozess nur Datensätze mit vorhandenen Entitäten und Attributen ausgewertet werden.
+Die aufgeführten Attribute und Entitäten sind für die Auswertung essentiell. Die Entitäten und deren Attribute sind jedoch optional.\\
+Aus diesem Grund sollen im ETL-Prozess nur Datensätze mit vorhandenen Entitäten und Attributen ausgewertet werden.\\
+
+Zur Abfrage der Nutzer muss eine Zeichenkette zur Filterung mitgegeben werden. Es findet eine Filterung des Nutzernamens statt.\\
+Aus diesem Grund werden die weltweit häufigsten Namen als weitere Datenquelle herangezogen und damit die Nutzerdaten erhoben.
 
 
 \subsection{OpenStreetMap}
 
+OpenStreetMap bietet neben umfangreichen Kartenmaterial auch den Service, entsprechend einer übergebenen Auswahl die darin befindeten Orte mit diversen Daten mit HTTP abzurufen.\\
+Mit diesem Service sollen fehlende Informationen von Nutzerdaten von Facebook in Bezug auf Positionen und Orte geliefert werden.
+
+\begin{center}
+\centering
+\includegraphics[width=\ScaleIfNeeded]{../OSM.pdf}%
+\captionof{figure}[OpenStreetMap Orte]{OpenStreetMap Orte}%
+\end{center}
 
 
 
@@ -233,11 +244,13 @@ Der Zugriff ist in der kostenlosen Version auf 10 Anfragen pro Minute und 500 An
 \captionof{figure}[Wetterdaten]{historische Wetterdaten von Weather Underground}%
 \end{center}
 
-
+Das obrige ERM stellt lediglich einen Teil der Granularität und Masse der Daten dar. Die bezeichneten Entitäten und Attribute sind für den ETL Prozess relevant.
 
 
 
 \subsection{Wetterstationen}
+
+
 
 
 \section{Architektur des aufzubauenden Data Warehouse}
@@ -279,6 +292,11 @@ Der Zugriff ist in der kostenlosen Version auf 10 Anfragen pro Minute und 500 An
 
 \bibitem{pentaho}
 \url{http://www.pentaho.de/}
+\\Abrufbar am 25.04.2013
+
+
+\bibitem{OSMAPI}
+\url{http://wiki.openstreetmap.org/wiki/Overpass_API/Language_Guide}
 \\Abrufbar am 07.05.2013
 
 
