@@ -217,7 +217,9 @@ Die aufgeführten Attribute und Entitäten sind für die Auswertung essentiell. 
 Aus diesem Grund sollen im ETL-Prozess nur Datensätze mit vorhandenen Entitäten und Attributen ausgewertet werden.\\
 
 Zur Abfrage der Nutzer muss eine Zeichenkette zur Filterung mitgegeben werden. Es findet eine Filterung des Nutzernamens statt.\\
-Aus diesem Grund werden die weltweit häufigsten Namen als weitere Datenquelle herangezogen und damit die Nutzerdaten erhoben.
+Aus diesem Grund werden die weltweit häufigsten Namen als weitere Datenquelle herangezogen und damit die Nutzerdaten erhoben.\\
+
+Jede Anfrage liefert nur einen Ausschnitt der geforderten Daten und Verweise auf die restlichen Daten.
 
 
 \subsection{OpenStreetMap}
@@ -250,10 +252,27 @@ Das obrige ERM stellt lediglich einen Teil der Granularität und Masse der Daten
 
 \subsection{Wetterstationen}
 
+Die Wetterstationen werden mit
 
+\begin{center}
+\centering
+\includegraphics[width=\ScaleIfNeeded]{../Wetterstation.pdf}%
+\captionof{figure}[Wetterstationen]{Wetterstationen}%
+\end{center}
 
 
 \section{Architektur des aufzubauenden Data Warehouse}
+
+Die Architektur wurde entsprechend der Vorlesung Informationssysteme entwurfen.
+
+\begin{center}
+\centering
+\includegraphics[width=\ScaleIfNeeded]{../Architektur.pdf}%
+\captionof{figure}[Architektur Data Warehouse]{Architektur des Data Warehouse}%
+\end{center}
+
+Der Zugriff auf große Mengen von Daten mit Hilfe der APIs ist auf Grund des zerstückelten Erhaltes der Daten nur mit einer entsprechenden Logik möglich. Dazu ist es notwendig diese Fragmente zu sammeln.\\
+Da die Datenquellen JSON als Format liefern und die Umwandlung in ein solches wenig aufwendig ist, wurde als Stating Area die schemafreie dokumentbasierte Datenbank MongoDB verwendet. Außerdem 
 
 \section{Datenbankschemata}
 
