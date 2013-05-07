@@ -1,0 +1,5 @@
+﻿Pentaho
+-------------
+
+OpenSource Java Business-Intelligence-Software
+Bereiche: ETL, Reporting, OLAP/Analysis und Data-mining
