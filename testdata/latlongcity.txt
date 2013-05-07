@@ -1,8 +1,11 @@
+Doku und Beispiele OSM-API:
+http://wiki.openstreetmap.org/wiki/Overpass_API/Language_Guide
+
 Sieglitz/Molau:
 oben links:		51.068,11.749
 oben rechts:	51.068,11.765
 unten links:	51.06,11.749
 unten rechts:	51.06,11.765
 
-lat,lon->cityname
+lat,lon->cityname (Punkte unten links, odeb rechts)
 http://overpass-api.de/api/interpreter?data=[out:json];node(51.06,11.749,51.068,11.765);out;
