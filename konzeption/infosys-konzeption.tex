@@ -147,7 +147,7 @@ Sommersemester 2013
 \begin{center}
 \begin{Large}
 \vfill {\textsf{\textbf{
-Beleg im Fach Informationssysteme\\
+Beleg im Fach\\Informationssysteme\\
 }}}
 \end{Large}
 Konzeption
@@ -235,10 +235,10 @@ Mit diesem Service sollen fehlende Informationen von Nutzerdaten von Facebook in
 
 
 
-\subsection{Weather-API}
+\subsection{Wetter-API}
 
-Weather Underground bietet angemeldeten Entwicklern per API Zugriff auf aktuelle und vergangene Wetter- und Klimadaten der ganzen Welt an. Auch hierbei werden die Daten mit HTTP abgefragt und im JSON-Format ausgeliefert.\\
-Der Zugriff ist in der kostenlosen Version auf 10 Anfragen pro Minute und 500 Anfragen pro Tag begrenzt.
+Der Wetterdienst Weather Underground bietet angemeldeten Entwicklern per API Zugriff auf aktuelle und vergangene Wetter- und Klimadaten der ganzen Welt an. Auch hierbei werden die Daten mit HTTP abgefragt und im JSON-Format ausgeliefert.\\
+Der Zugriff ist in der kostenlosen Version für Entwickler auf 10 Anfragen pro Minute und 500 Anfragen pro Tag begrenzt.
 
 \begin{center}
 \centering
@@ -263,7 +263,7 @@ Die Wetterstationen werden mit
 
 \section{Architektur des aufzubauenden Data Warehouse}
 
-Die Architektur wurde entsprechend der Vorlesung Informationssysteme entwurfen.
+Die Architektur wurde entsprechend der Vorlesung Informationssysteme entworfen.
 
 \begin{center}
 \centering
@@ -274,11 +274,31 @@ Die Architektur wurde entsprechend der Vorlesung Informationssysteme entwurfen.
 Der Zugriff auf große Mengen von Daten mit Hilfe der APIs ist auf Grund des zerstückelten Erhaltes der Daten nur mit einer entsprechenden Logik möglich. Dazu ist es notwendig diese Fragmente zu sammeln.\\
 Da die Datenquellen JSON als Format liefern und die Umwandlung in ein solches wenig aufwendig ist, wurde als Stating Area die schemafreie dokumentbasierte Datenbank MongoDB verwendet. Außerdem wird damit der heterogene Charakter der Quelldaten erhalten und betont.\\
 
+Um den ETL-Prozess übersichtlich zu halten und dessen Definition zu erleichtern, wird das Framework Pentaho verwendet. Pentaho ist eine OpenSource Java Business-Intelligence-Software, welche für die Bereiche ETL, Reporting, OLAP/Analysis und Data-mining geeignet ist.\\
+
+Ein Metadata-Repository ist nicht vorgesehen. Die Definition der Tabellen der MariaDB dienen der Beschreibung der Daten.\\
+Eine relationale Abbildung des Data Warehouse wurde gewählt, da die hinter dem Data Warehouse befindliche Geschäftslogik zumeist von relationalen Daten ausgeht.\\
+
+Einfacher halber wird Pentaho zur Auswertung weiter verwendet, wodurch mit geringem Auswand entsprechende Visualisierung erzeugt werden können. Sollte sich Pentaho nicht eignen, wird zur Auswertung auf JavaScript zurückgegriffen.
 
 
 \section{Datenbankschemata}
 
+
+
+\begin{center}
+\centering
+\includegraphics[width=\ScaleIfNeeded]{../Data_Warehouse_ERM.pdf}%
+\captionof{figure}[ERM des Data Warehouse]{ERM des Data Warehouse}%
+\end{center}
+
+
+
+
 \section{Beschreibung der anvisierten Analysen}
+
+Die Analysen sollen sich auf der einen Seite auf den Zusammenhang zwischen Beziehungsstatus und Position
+
 
 %\clearpage
 %\section{Glossar}
