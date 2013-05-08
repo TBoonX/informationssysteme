@@ -213,18 +213,18 @@ Die Daten werden im JSON-Format ausgeliefert.
 \end{center}
 
 Abbildung 1 deutet den Charakter der zu erhaltenten Daten an.\\
-Die aufgeführten Attribute und Entitäten sind für die Auswertung essentiell. Die Entitäten und deren Attribute sind jedoch optional.\\
+Die aufgeführten Attribute und Entitäten sind für die Auswertung essentiell. Die Entitäten und deren Attribute sind jedoch nicht in jedem Datensatz vorhanden.\\
 Aus diesem Grund sollen im ETL-Prozess nur Datensätze mit vorhandenen Entitäten und Attributen ausgewertet werden.\\
 
-Zur Abfrage der Nutzer muss eine Zeichenkette zur Filterung mitgegeben werden. Es findet eine Filterung des Nutzernamens statt.\\
-Aus diesem Grund werden die weltweit häufigsten Namen als weitere Datenquelle herangezogen und damit die Nutzerdaten erhoben.\\
+Zur Abfrage der Nutzer muss eine Zeichenkette zur Filterung mitgegeben werden. Es findet eine Filterung anhand des Nutzernamens statt.\\
+In  Folge dessen werden die weltweit häufigsten Namen als weitere Datenquelle herangezogen und damit die Nutzerdaten erhoben.\\
 
-Jede Anfrage liefert nur einen Ausschnitt der geforderten Daten und Verweise auf die restlichen Daten.
+Jede Anfrage liefert einen Ausschnitt der geforderten Daten und Verweise auf die restlichen Daten.
 
 
 \subsection{OpenStreetMap}
 
-OpenStreetMap bietet neben umfangreichen Kartenmaterial auch den Service, entsprechend einer übergebenen Auswahl die darin befindeten Orte mit diversen Daten mit HTTP abzurufen.\\
+OpenStreetMap bietet neben umfangreichen Kartenmaterial auch den Service, entsprechend eines übergebenen Bereiches die darin befindeten Orte mit diversen Informationen mit HTTP abzurufen.\\
 Mit diesem Service sollen fehlende Informationen von Nutzerdaten von Facebook in Bezug auf Positionen und Orte geliefert werden.
 
 \begin{center}
@@ -246,7 +246,7 @@ Der Zugriff ist in der kostenlosen Version für Entwickler auf 10 Anfragen pro M
 \captionof{figure}[Wetterdaten]{historische Wetterdaten von Weather Underground}%
 \end{center}
 
-Das obrige ERM stellt lediglich einen Teil der Granularität und Masse der Daten dar. Die bezeichneten Entitäten und Attribute sind für den ETL Prozess relevant.
+Das obrige ERM stellt lediglich einen Teil der Granularität und Masse der Daten dar. Die dargestellten Entitäten und Attribute sind für den ETL Prozess relevant.
 
 
 
@@ -272,14 +272,14 @@ Die Architektur wurde entsprechend der Vorlesung Informationssysteme entworfen.
 \end{center}
 
 Der Zugriff auf große Mengen von Daten mit Hilfe der APIs ist auf Grund des zerstückelten Erhaltes der Daten nur mit einer entsprechenden Logik möglich. Dazu ist es notwendig diese Fragmente zu sammeln.\\
-Da die Datenquellen JSON als Format liefern und die Umwandlung in ein solches wenig aufwendig ist, wurde als Stating Area die schemafreie dokumentbasierte Datenbank MongoDB verwendet. Außerdem wird damit der heterogene Charakter der Quelldaten erhalten und betont.\\
+Da die Datenquellen JSON als Format liefern und die Umwandlung in ein solches wenig Aufwand bedarf, wurde als Stating Area die schemafreie dokumentbasierte Datenbank MongoDB verwendet. MongoDB speichert Datensätze im JSON-Format ab. Außerdem wird damit der heterogene Charakter der Quelldaten erhalten und betont.\\
 
 Um den ETL-Prozess übersichtlich zu halten und dessen Definition zu erleichtern, wird das Framework Pentaho verwendet. Pentaho ist eine OpenSource Java Business-Intelligence-Software, welche für die Bereiche ETL, Reporting, OLAP/Analysis und Data-mining geeignet ist.\\
 
 Ein Metadata-Repository ist nicht vorgesehen. Die Definition der Tabellen der MariaDB dienen der Beschreibung der Daten.\\
 Eine relationale Abbildung des Data Warehouse wurde gewählt, da die hinter dem Data Warehouse befindliche Geschäftslogik zumeist von relationalen Daten ausgeht.\\
 
-Einfacher halber wird Pentaho zur Auswertung weiter verwendet, wodurch mit geringem Auswand entsprechende Visualisierung erzeugt werden können. Sollte sich Pentaho nicht eignen, wird zur Auswertung auf JavaScript zurückgegriffen.
+Einfacher halber wird Pentaho zur Auswertung weiter verwendet, wodurch mit geringem Auswand entsprechende Visualisierungen erzeugt werden können. Sollte sich Pentaho nicht eignen, wird zur Auswertung auf JavaScript zurückgegriffen.
 
 
 \section{Datenbankschemata}
