@@ -5,7 +5,7 @@
 	<title>Facebook public data getter</title>
 </head>
 <body>
-	<h1>Seite gettet ein paar daten von usern mit zufälliger ID.<br>...</h1>
+	<h1>Seite gettet ein paar daten von usern mit zufï¿½lliger ID.<br>...</h1>
 
 	<br>
 	Anzahl falsche ID's:
@@ -31,7 +31,7 @@
 		//URL
 		var base = 'https://graph.facebook.com/';
 		var tail = '?fields=id,name,first_name,last_name,username,birthday,about,address,bio,picture,work,hometown,gender,website,link,locale';
-		var extra = '&method=GET&format=json&access_token=151684371672844|dPOEz7OHnmAR2JAVjz5mIJUiuns';
+		var extra = '&method=GET&format=json&access_token=';
 		var startID = 500000000;
 		
 		//globale Variablen
@@ -47,7 +47,7 @@
 		{
 			//Request erzeugen
 			request = new XMLHttpRequest();
-			//Bei Statusänderung callback ausführen
+			//Bei Statusï¿½nderung callback ausfï¿½hren
 			request.onload = function() {
 				console.log('new response:');
 				console.log(this);
@@ -72,7 +72,7 @@
 		   
 		};
 		
-		//Callback - für asynchronen request
+		//Callback - fï¿½r asynchronen request
 		function callback(request)
 		{
 			//Antwort zu Objekt parsen
@@ -107,7 +107,7 @@
             pic.id = 'pic'+correct;
             //pic.src = json.picture.data.url;
             
-            //Einzelne Attribute für Ausgabe aufbereiten
+            //Einzelne Attribute fï¿½r Ausgabe aufbereiten
             var sb = '';
             for (var k in json)
             {
