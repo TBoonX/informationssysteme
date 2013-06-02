@@ -7,3 +7,6 @@
 - ETL testweise laufen lassen
 - Auswertungsmöglichkeiten anschauen
 - auswertung machen - eine
+
+Nutzer:
+{ user: "infosys", pwd: "InfoKirsten321", roles: [ "readWrite" ] }
