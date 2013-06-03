@@ -1,1 +1,41 @@
 ﻿http://www.wunderground.com/weather/api/
+﻿
+﻿#### NCDC ####
+﻿
+﻿Dateien mit Wetterdaten (Name=WetterstationID):
+﻿ftp://ftp.ncdc.noaa.gov./pub/data/igra/derived-v2/data-por/WETTERSTATIONID.dat.gz
+﻿
+﻿Hinweise zur Auswertung der Dateien:
+﻿ftp://ftp.ncdc.noaa.gov./pub/data/igra/derived-v2/readme.txt
+﻿
+﻿
+﻿Liste der Wetterstationen:
+﻿ftp://ftp.ncdc.noaa.gov./pub/data/igra/derived-v2/derived-stations.txt
+﻿
+﻿Wetterstationen in Deutschland:
+Land ID    NAME                                 LAT     LON     HOEHE   ERFASSUNGSZEITRAUM
+GM  10035  SCHLESWIG                            54.53    9.55   48      1963 2013
+GM  10046  KIEL/HOLTENAU                        54.38   10.15   32      1969 1994
+GM  10184  GREIFSWALD                           54.10   13.40    6   C  1963 2013
+GM  10200  EMDEN/FLUGPLATZ                      53.38    7.23    5      1982 2011
+GM  10238  BERGEN                               52.82    9.93   77      1969 2013
+GM  10304  MEPPEN                               52.73    7.33   21      1971 2013
+GM  10307  RHEINE                               52.27    7.43   78      1971 1985
+GM  10338  HANNOVER                             52.47    9.70   55      1963 1997
+GM  10384  BERLIN/TEMPELHOF                     52.47   13.40   50      1966 1993
+GM  10393  LINDENBERG                           52.22   14.12  110 G C  1963 2013
+GM  10410  ESSEN                                51.40    6.97  153      1965 2013
+GM  10437  FRITZLAR                             51.13    9.28  223      1980 2007
+GM  10454  WERNIGERODE                          51.85   10.77  240      1963 1964
+GM  10486  DRESDEN                              51.12   13.68  232   C  1963 2000
+GM  10513  KOLN/BONN                            50.87    7.13   91      1963 1965
+GM  10548  MEININGEN                            50.57   10.38  453   C  1969 2013
+GM  10618  IDAR/OBERSTEIN                       49.70    7.33  377      1970 2013
+GM  10642  HANAU                                50.17    8.95  112      1969 1983
+GM  10687  GRAFENWOHR                           49.70   11.95  414      1967 1995
+GM  10739  STUTTGART                            48.83    9.20  315 F    1963 2013
+GM  10771  KUEMMERSRUCK                         49.43   11.90  419      1969 2013
+GM  10828  SIGMARINGEN                          48.10    9.25  646      1997 2007
+GM  10868  MUENCHEN                             48.25   11.55  489  L   1976 2013
+GM  10954  ALTENSTADT/SHONGUA                   47.83   10.87  738      1983 2013
+GM  10962  HOHENPEISSENBERG                     47.80   11.02  986      1989 2013
