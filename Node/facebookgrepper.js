@@ -42,22 +42,23 @@ db.test_locations.save({
 });
 */
 
-
-process.on('exit', function () {
-  console.warn('\n..\nEXIT');
-});
+console.log('\nFacebook\n-------------------\n\nGet Posts with places or coordinates.\n\n');
 
 
 var util = require('./myUtil.js');
 var pposts = require('./facebook_search_posts_with_locations.js');
 
-//test
-module.test = 0;
-util.inkrement(module.test);
-console.log(module.test);
+
+process.on('exit', function () {
+    console.warn('\nAmount of found data: '+pposts.hits());
+	
+	console.warn('\n..\nEXIT');
+});
 
 //pposts auf Wortlisten ausführen
-
+util.wordlists.doForEverything(function(query) {
+	pposts.start(query, function(){});
+});
 
 
 

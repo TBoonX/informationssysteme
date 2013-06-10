@@ -18,7 +18,15 @@ module.optionsGen = function(query)
 };
 
 module.reqCount = {};
-module.hitCount = {};
+module.exports.hitCount  = {};
+exports.hits = function() {
+	var count = 0;
+	for (i in module.exports.hitCount)
+	{
+		count += module.exports.hitCount[i];
+	}
+	return count;
+};
 module.map = {};
 module.callbacks = {};
 
@@ -58,15 +66,32 @@ module.consumePostsTest = function(next, query) {
 		  var ret = {};
 		  try {
 			  var ret = JSON.parse(overallb);
+
+			  //Wiederholung bei fehler 613
+			  if (ret.error && ret.error.code == 613)
+			  {
+				  setTimeout(function(){
+					  console.warn(query+' have to wait...');
+					  module.consumePostsTest(next, query);
+				  }, 5000);
+				  return;
+			  }
 			  
 			  //Abbruch bei fehlerhaftem Key
-			  if (ret .error && ret.error.type == 'OAuthException')
+			  if (ret.error && ret.error.type == 'OAuthException')
 			  {
 				  module.fail({stack: ret}, query);
 				  return;
 			  }
 		  } catch (e) {
-			  module.fail(e, query);
+			  //Too many requests
+			  //repeat
+			  setTimeout(function(){
+				  console.warn(query+' have to wait...');
+				  module.consumePostsTest(next, query);
+			  }, 10000);
+			  
+			  //module.fail(e, query);
 			  return;
 		  }
 		  
@@ -104,8 +129,8 @@ module.consumePostsTest = function(next, query) {
 
 //Verarbeite gefundene Daten
 module.consumeData = function(data, query) {
-	module.hitCount[query]++;
-	console.log('-> PPosts: found element; count: '+module.hitCount[query]);
+	module.exports.hitCount[query]++;
+	console.log('-> PPosts: found element; count: '+module.exports.hitCount[query]);
 	
 	module.mongo.saveElement(data, 'pposts');
 	
@@ -141,7 +166,7 @@ exports.start = function(query, callback) {
 	
 	//reg counts
 	module.reqCount[query] = 0;
-	module.hitCount[query] = 0;
+	module.exports.hitCount[query] = 0;
 	
 	//Start Snake
 	module.consumePostsTest('https://'+options.hostname+options.path, query);
