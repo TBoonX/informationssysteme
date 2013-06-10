@@ -35,7 +35,7 @@ module.consumePostsTest = function(next, query) {
 	if (!module.map[query])
 		return;
 	
-	//n‰chste Daten holen
+	//n√§chste Daten holen
 	//send http
 	var options = {
 	  hostname: 'graph.facebook.com',
@@ -65,7 +65,7 @@ module.consumePostsTest = function(next, query) {
 		  //parsen
 		  var ret = {};
 		  try {
-			  var ret = JSON.parse(overallb);
+			  ret = JSON.parse(overallb);
 
 			  //Wiederholung bei Fehler 613 (600 per 600s)
 			  if (ret.error && ret.error.code == 613)
