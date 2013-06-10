@@ -30,5 +30,3 @@ exports.wordlists = {
 		
 	}
 };
-
-exports.inkrement = function(a){a();};

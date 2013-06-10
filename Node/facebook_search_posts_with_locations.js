@@ -12,7 +12,7 @@ module.optionsGen = function(query)
 	return {
 	  hostname: 'graph.facebook.com',
 	  port: 443,
-	  path: '/search?fields=from,place,coordinates,message,description,created_time,likes,shares,comments,to,via&q='+query+'&type=post&with=location&access_token='+module.secret.apiKey,
+	  path: '/search?fields=from,place,coordinates,message,description,created_time,likes,shares,comments,to,via&q="'+query+'"&type=post&with=location&access_token='+module.secret.apiKey,
 	  method: 'GET'
 	};
 };
@@ -35,7 +35,7 @@ module.consumePostsTest = function(next, query) {
 	if (!module.map[query])
 		return;
 	
-	//n√§chste Daten holen
+	//n‰chste Daten holen
 	//send http
 	var options = {
 	  hostname: 'graph.facebook.com',
@@ -71,7 +71,7 @@ module.consumePostsTest = function(next, query) {
 			  if (ret.error && ret.error.code == 613)
 			  {
 				  setTimeout(function(){
-					  console.info('! '+query+' have to wait...');
+					  console.info('! "'+query+'" have to wait (too many requests per 600s)...');
 					  module.consumePostsTest(next, query);
 				  }, 13000);
 				  return;
@@ -80,9 +80,18 @@ module.consumePostsTest = function(next, query) {
 			  if (ret.error && ret.error.code == 613)
 			  {
 				  setTimeout(function(){
-					  console.info('! '+query+' have to wait...');
+					  console.info('! "'+query+'" have to wait (too many requests per key)...');
 					  module.consumePostsTest(next, query);
 				  }, 180000);
+				  return;
+			  }
+			  //Wiederholung bei Fehler 109 (temporally server error)
+			  if (ret.error && ret.error.code == 190)
+			  {
+				  setTimeout(function(){
+					  console.info('! "'+query+'" have to wait (temp error)...');
+					  module.consumePostsTest(next, query);
+				  }, 20000);
 				  return;
 			  }
 			  
@@ -96,7 +105,7 @@ module.consumePostsTest = function(next, query) {
 			  //Too many requests
 			  //repeat
 			  setTimeout(function(){
-				  console.info('! '+query+' have to wait...');
+				  console.info('! "'+query+'" have to wait (too many requests)...');
 				  module.consumePostsTest(next, query);
 			  }, 13000);
 			  
