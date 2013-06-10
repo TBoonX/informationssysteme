@@ -73,7 +73,7 @@ module.consumePostsTest = function(next, query) {
 				  setTimeout(function(){
 					  console.info('! "'+query+'" have to wait (too many requests per 600s)...');
 					  module.consumePostsTest(next, query);
-				  }, 13000);
+				  }, 10000+parseInt(Math.random()*10000));
 				  return;
 			  }
 			  //Wiederholung bei Fehler 4 (100Million/10k per Day)
@@ -82,7 +82,7 @@ module.consumePostsTest = function(next, query) {
 				  setTimeout(function(){
 					  console.info('! "'+query+'" have to wait (too many requests per key)...');
 					  module.consumePostsTest(next, query);
-				  }, 180000);
+				  }, 180000+parseInt(Math.random()*40000));
 				  return;
 			  }
 			  //Wiederholung bei Fehler 109 (temporally server error)
@@ -91,7 +91,7 @@ module.consumePostsTest = function(next, query) {
 				  setTimeout(function(){
 					  console.info('! "'+query+'" have to wait (temp error)...');
 					  module.consumePostsTest(next, query);
-				  }, 20000);
+				  }, 5000+parseInt(Math.random()*5000));
 				  return;
 			  }
 			  
@@ -107,7 +107,7 @@ module.consumePostsTest = function(next, query) {
 			  setTimeout(function(){
 				  console.info('! "'+query+'" have to wait (too many requests)...');
 				  module.consumePostsTest(next, query);
-			  }, 13000);
+			  }, 10000+parseInt(Math.random()*10000));
 			  
 			  //module.fail(e, query);
 			  return;
@@ -120,7 +120,7 @@ module.consumePostsTest = function(next, query) {
 				  //Abbruch bei leeren Daten
 				  if (r.ret && r.ret.data && r.ret.data.length == 0)
 				  {
-					  module.fail({stack: '-> PPosts: emtpy Data - query: '+r.query}, r.query);
+					  module.fail({stack: '-> PPosts: empty Data - query: '+r.query}, r.query);
 					  return;
 				  }
 				  
@@ -128,6 +128,7 @@ module.consumePostsTest = function(next, query) {
 					  module.consumePostsTest(n.next, n.query);
 				  });
 				  
+				  //eventuell vorhandene Daten verarbeiten
 				  for (i in r.ret.data)
 				  {
 					if (r.ret.data[i].place || r.ret.data[i].coordinates)
