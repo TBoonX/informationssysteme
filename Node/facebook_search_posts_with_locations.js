@@ -12,7 +12,7 @@ module.optionsGen = function(query)
 	return {
 	  hostname: 'graph.facebook.com',
 	  port: 443,
-	  path: '/search?fields=from,place,coordinates&q='+query+'&type=post&with=location&access_token='+module.secret.personalApiKey,
+	  path: '/search?fields=from,place,coordinates,message,description,created_time,likes,shares,comments,to,via&q='+query+'&type=post&with=location&access_token='+module.secret.personalApiKey,
 	  method: 'GET'
 	};
 };
