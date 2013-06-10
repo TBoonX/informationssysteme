@@ -55,7 +55,7 @@ process.on('exit', function () {
 	console.info('\n..\nEXIT');
 });
 
-//pposts auf Wortlisten ausführen
+//pposts auf Wortlisten ausfÃ¼hren
 util.wordlists.doForEverything(function(query) {
 	pposts.start(query, function(){
 		console.info('\nWith '+query+' were '+pposts.hits()+'hits.\n');
@@ -102,7 +102,7 @@ function user_manager () {
 	};
 	
 	this.feedbacks = {};
-	//consumer der Attribute melden sich zurück; wenn sich alle gemeldet haben, wird die Person in die DB geschrieben
+	//consumer der Attribute melden sich zurÃ¼ck; wenn sich alle gemeldet haben, wird die Person in die DB geschrieben
 	this.feedback = function(attribute, userid) {
 		this.feedbacks[userid]++;
 		
@@ -163,7 +163,7 @@ function consumeUser(user_) {
 	
 	console.log('-----------------\nconsume User '+user_.id+'\namount of calls: '+(count_likes+count_user));
 	
-	//User der map beifügen
+	//User der map beifÃ¼gen
 	user.add(user_);
 	
 	//likes
@@ -212,13 +212,13 @@ function consumeLikes(likes, id, first) {
 	
 	console.log('-----------------\nconsume likes from '+id+' with '+likes.data.length+' elements');
 	
-	//eventuell likes map beifügen
+	//eventuell likes map beifÃ¼gen
 	if (!first)
 	{
 		user.addToAttribute(likes.data, 'likes', id);
 	}
 	
-	//nächste Daten holen
+	//nÃ¤chste Daten holen
 	//send http
 	var indexes = util.indexesInString('=', likes.paging.next);
 	var extra = likes.paging.next.substring(indexes[indexes.length-2]+1);
@@ -278,13 +278,13 @@ function consumePosts(posts, id, first) {
 	
 	console.log('-----------------\nconsume posts from '+id+' with '+posts.data.length+' elements');
 	
-	//eventuell posts map beifügen
+	//eventuell posts map beifÃ¼gen
 	if (!first)
 	{
 		user.addToAttribute(posts.data, 'posts', id);
 	}
 	
-	//nächste Daten holen
+	//nÃ¤chste Daten holen
 	//send http
 	var n = posts.paging.next.lastIndexOf('=');
 	var until = posts.paging.next.substring(n+1);
