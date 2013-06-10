@@ -2,14 +2,14 @@
  * New node file
  */
 var https = require("https");
-
+/*
 var connectionString = "mongodb://infosys:InfoKirsten321@127.0.0.1"; // "username:password@example.com/mydb"
 var collections = ["test"];
 var mongojs = require('mongojs');
 //var db = mongojs(connectionString, collections);
-//var db = mongojs('infosys:InfoKirsten321@127.0.0.1/test', ['test', 'test_locations']);
+var db = mongojs('infosys:InfoKirsten321@127.0.0.1/test', ['test', 'test_locations']);
 
-/*
+
 db.test.save({email: "srirangan@gmail.com", password: "iLoveMongo", sex: "male"}, function(err, saved) {
  console.log(err);
   if( err || !saved ) console.log("User not saved");
@@ -42,14 +42,27 @@ db.test_locations.save({
 });
 */
 
-//findet indexe von needle in haystack
-function indexesInString(needle, haystack) {
-	var indices = [];
-	for(var i=0; i<haystack.length;i++) {
-	    if (haystack[i] === needle) indices.push(i);
-	}
-	return indices;
-}
+
+process.on('exit', function () {
+  console.warn('\n..\nEXIT');
+});
+
+
+var util = require('./myUtil.js');
+var pposts = require('./facebook_search_posts_with_locations.js');
+
+//test
+module.test = 0;
+util.inkrement(module.test);
+console.log(module.test);
+
+//pposts auf Wortlisten ausführen
+
+
+
+
+//-------------------------------------
+//Old
 
 //User Manager
 function user_manager () {
@@ -108,13 +121,17 @@ count_likes = 0;
 
 //URL-generator
 function url_gen () {
-	this.fields = 'id,likes,checkins,activities,name,address,updated_time,first_name,last_name,username,birthday,picture,hometown,gender,locale,locations,relationship_status';
+	this.fields = 'id,likes,statuses,posts,checkins,activities,name,address,updated_time,first_name,last_name,username,birthday,picture,hometown,gender,locale,locations,relationship_status';
 	this.query = 'james';
-	this.access_token = '';
+	this.access_token = 'CAACJ9MUXbwwBAEQs6HrCVqtCsanXobjC5ZBWFkrqcxG4cNG2vJSw3o78gUFKGwuZBxcoyFfiPeHjJoTRaFCMN4MJUVthmv5lEE6kmV0ZAQFZArn7ig5tqC5a5AyBHvnBHIrIaVNRVAqbw3RUsRZBO4WJxfp4ZBoRMZD';
 	this.type = 'user';
 	this.limit = 1;
 	this.offset = 0;
 	this.after_id = 0;
+	
+	this.setQuery = function(q) {
+		this.query = q;
+	};
 	
 	this.updateExtra = function(afterid) {
 		this.offset++;
@@ -150,7 +167,7 @@ function consumeUser(user_) {
 	consumeLikes(user.likes, user_.id, true);
 	
 	//posts
-	//consumePosts(user_.posts, user_.id, true);
+	consumePosts(user_.posts, user_.id, true);
 	
 	//checkins
 	if (user_.checkins)
@@ -167,13 +184,11 @@ function consumeUser(user_) {
 	}
 	
 	//statuses
-	/*
 	if (user_.statuses)
 	{
 		console.hint('User '+user_id+' has statuses:');
 		console.hint(user_.statuses);
 	}
-	*/
 	
 	//locations
 	if (user_.locations)
@@ -202,7 +217,7 @@ function consumeLikes(likes, id, first) {
 	
 	//nächste Daten holen
 	//send http
-	var indexes = indexesInString('=', likes.paging.next);
+	var indexes = util.indexesInString('=', likes.paging.next);
 	var extra = likes.paging.next.substring(indexes[indexes.length-2]+1);
 	var options = {
 	  hostname: 'graph.facebook.com',
@@ -332,7 +347,7 @@ function consumeUserPaging(paging) {
 	}
 	*/
 	
-	console.log('-----------------\nconsume User Paging');
+	console.log('-----------------\nconsume User Paging; UserCount='+count_user);
 	
 	//get lastid
 	var n = paging.next.lastIndexOf('=');
@@ -404,9 +419,98 @@ function getUser(todo) {
 }
 
 //Start
-getUser(function(res, url_gen_loc){
+/*
+getUser(function(res){
 	console.warn(res);
 	
 	consumeUserPaging(res.paging);
 	consumeUser(res.data[0]);
 });
+*/
+
+
+/*
+var repeat = false;
+//Asynchron countUsers mit offset starten
+for (var i = 0; repeat; i=i+25)
+{
+	
+	util.async_function(i, function(o) {
+		console.log('.');
+		countUsers(o);
+	  });
+	
+	if (i > 15000)
+		break;
+}
+*/
+
+function countUsers(offset)
+{
+	console.log('-----------------\ncountUsers');
+	
+	//send http
+	var options = {
+	  hostname: 'graph.facebook.com',
+	  port: 443,
+	  path: '/search?fields=from,place,coordinates&q=James&type=post&with=location&access_token=CAACJ9MUXbwwBABmXlOcEXjLBDZBZC2EfIIIbUxuPoGZBUo0nZC0S6Gl04tHhOeFtQdUJHs0NmD36VzehwhLBO0oE06GPzuGzmdLoSJvF4vrtx5v47Wxd9xhZAVkqrmXIoFGBwtkbzrgZCrJZBvHbbOrYPv17nLbpZCcZD&offset='+offset,
+	  method: 'GET'
+	};
+	
+	console.warn('call https://'+options.hostname+options.path);
+	
+	var buffers = [];
+
+	var req = https.request(options, function(res) {
+	  console.log("countUsers: statusCode: ", res.statusCode);
+	  
+	  if (res.statusCode != 200)
+	  {
+		  console.warn('Error with key!');
+		  console.warn(postAccessedCount);
+		  console.warn(res);
+		  
+		  repeat = false;
+		  
+		  return;
+	  }
+
+	  res.on('data', function(d) {
+	    console.log('countUsers: bytelength: '+d.length);
+	    
+	    buffers.push(d);
+	  });
+	  
+	  res.on('end', function() {
+		  console.warn('countUsers: closed!');
+		  
+		  //var overallb = Buffer.concat(buffers, buffers.length);
+		  var overallb = '';
+		  for (var i = 0; i < buffers.length; i++)
+		  {
+			  overallb = overallb+buffers[i].toString('utf8');
+		  }
+		  
+		  
+		  var ret = JSON.parse(overallb);
+		  
+		  console.log('getPosts: length of all: '+overallb.length);
+		  
+		  for (i in ret.data)
+			  if (ret.data[i].place || ret.data[i].coordinate) console.log(ret.data[i]);
+		  
+		  try {
+			  if (0 == ret.data.length)
+			  {
+				  repeat = false;console.log('last offset: '+offset);
+			  }
+		  } catch (e) {repeat = false;console.log('last offset: '+offset);}
+	  });
+	});
+	req.end();
+
+	req.on('error', function(e) {
+		console.log("getPosts Error: " + e.message); 
+		   console.log( e.stack );
+	});
+};
