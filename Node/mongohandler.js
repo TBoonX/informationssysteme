@@ -26,7 +26,7 @@ module.failedUpdates = [];
 exports.saveElement = function(element, collection) {
 	//mache id zu id_
 	element = module.objectIdTo_id(element);
-	console.log(element);
+	
 	module.db[collection].save(element, function(err, saved) {
 	 if( err || !saved ) {
 		  console.info("!!! Update on DB failed!");
