@@ -50,9 +50,9 @@ var pposts = require('./facebook_search_posts_with_locations.js');
 
 
 process.on('exit', function () {
-    console.warn('\nAmount of found data: '+pposts.hits());
+    console.info('\nAmount of found data: '+pposts.hits());
 	
-	console.warn('\n..\nEXIT');
+	console.info('\n..\nEXIT');
 });
 
 //pposts auf Wortlisten ausführen

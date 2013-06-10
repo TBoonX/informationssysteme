@@ -43,7 +43,7 @@ module.consumePostsTest = function(next, query) {
 	  path: next.substring(26),
 	  method: 'GET'
 	};
-	//console.warn(options);
+	//console.info(options);
 	var buffers = [];
 	
 	//definiere request
@@ -71,7 +71,7 @@ module.consumePostsTest = function(next, query) {
 			  if (ret.error && ret.error.code == 613)
 			  {
 				  setTimeout(function(){
-					  console.warn(query+' have to wait...');
+					  console.info('! '+query+' have to wait...');
 					  module.consumePostsTest(next, query);
 				  }, 5000);
 				  return;
@@ -87,7 +87,7 @@ module.consumePostsTest = function(next, query) {
 			  //Too many requests
 			  //repeat
 			  setTimeout(function(){
-				  console.warn(query+' have to wait...');
+				  console.info('! '+query+' have to wait...');
 				  module.consumePostsTest(next, query);
 			  }, 10000);
 			  
@@ -138,9 +138,9 @@ module.consumeData = function(data, query) {
 
 //Fehlerhandling
 module.fail = function(e, query) {
-	console.warn('PPost: Error!'); 
-	console.warn( e.stack );
-	console.warn('\n');
+	console.info('!!! PPost: Error!'); 
+	console.info( e.stack );
+	console.info('\n');
 	
 	//Callback
 	module.callbacks[query]();
