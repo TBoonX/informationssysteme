@@ -12,7 +12,7 @@ module.optionsGen = function(query)
 	return {
 	  hostname: 'graph.facebook.com',
 	  port: 443,
-	  path: '/search?fields=from,place,coordinates,message,description,created_time,likes,shares,comments,to,via&q='+query+'&type=post&with=location&access_token='+module.secret.personalApiKey,
+	  path: '/search?fields=from,place,coordinates,message,description,created_time,likes,shares,comments,to,via&q='+query+'&type=post&with=location&access_token='+module.secret.apiKey,
 	  method: 'GET'
 	};
 };
@@ -67,13 +67,22 @@ module.consumePostsTest = function(next, query) {
 		  try {
 			  var ret = JSON.parse(overallb);
 
-			  //Wiederholung bei fehler 613
+			  //Wiederholung bei Fehler 613 (600 per 600s)
 			  if (ret.error && ret.error.code == 613)
 			  {
 				  setTimeout(function(){
 					  console.info('! '+query+' have to wait...');
 					  module.consumePostsTest(next, query);
-				  }, 5000);
+				  }, 13000);
+				  return;
+			  }
+			  //Wiederholung bei Fehler 4 (100Million/10k per Day)
+			  if (ret.error && ret.error.code == 613)
+			  {
+				  setTimeout(function(){
+					  console.info('! '+query+' have to wait...');
+					  module.consumePostsTest(next, query);
+				  }, 180000);
 				  return;
 			  }
 			  
@@ -89,7 +98,7 @@ module.consumePostsTest = function(next, query) {
 			  setTimeout(function(){
 				  console.info('! '+query+' have to wait...');
 				  module.consumePostsTest(next, query);
-			  }, 10000);
+			  }, 13000);
 			  
 			  //module.fail(e, query);
 			  return;
@@ -143,7 +152,7 @@ module.fail = function(e, query) {
 	console.info('\n');
 	
 	//Callback
-	module.callbacks[query]();
+	module.callbacks[query](query);
 };
 
 //Abbruch 
