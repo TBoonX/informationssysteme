@@ -193,3 +193,20 @@ exports.start = function(query, callback) {
 
 //Test
 //exports.start('James', function(){});
+
+
+//Start
+console.log('\nFacebook\n-------------------\n\nGet Posts with places or coordinates.\n\n');
+
+process.on('exit', function () {
+    console.info('\nAmount of found data: '+exports.hits());
+	
+	console.info('\n..\nEXIT');
+});
+
+//pposts auf Wortlisten ausführen
+module.util.wordlists.doForEverything(function(query) {
+	exports.start(query, function(){
+		console.info('\nWith "'+query+'" were '+exports.hits()+'hits.\n');
+	});
+});

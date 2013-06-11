@@ -2,65 +2,8 @@
  * New node file
  */
 var https = require("https");
-/*
-var connectionString = "mongodb://infosys:InfoKirsten321@127.0.0.1"; // "username:password@example.com/mydb"
-var collections = ["test"];
-var mongojs = require('mongojs');
-//var db = mongojs(connectionString, collections);
-var db = mongojs('infosys:InfoKirsten321@127.0.0.1/test', ['test', 'test_locations']);
 
 
-db.test.save({email: "srirangan@gmail.com", password: "iLoveMongo", sex: "male"}, function(err, saved) {
- console.log(err);
-  if( err || !saved ) console.log("User not saved");
-  else console.log("User saved");
-});
-
-db.test.find({sex: "male"}, function(err, users) {
-  if( err || !users) console.log("No male users found");
-  else users.forEach( function(maleUser) {
-    console.log(maleUser);
-  } );
-});
-
-db.test.update({email: "srirangan@gmail.com"}, {$set: {sex: "female"}}, function(err, updated) {
-  if( err || !updated ) console.log("User not updated");
-  else console.log("User updated");
-});
-
-db.test.find({sex: "male"}, function(err, users) {
-  if( err || !users) console.log("No male users found");
-  else users.forEach( function(maleUser) {
-    console.log(maleUser);
-  } );
-});
-*/
-
-/*
-db.test_locations.save({
-	
-});
-*/
-
-console.log('\nFacebook\n-------------------\n\nGet Posts with places or coordinates.\n\n');
-
-
-var util = require('./myUtil.js');
-var pposts = require('./facebook_search_posts_with_locations.js');
-
-
-process.on('exit', function () {
-    console.info('\nAmount of found data: '+pposts.hits());
-	
-	console.info('\n..\nEXIT');
-});
-
-//pposts auf Wortlisten ausführen
-util.wordlists.doForEverything(function(query) {
-	pposts.start(query, function(){
-		console.info('\nWith '+query+' were '+pposts.hits()+'hits.\n');
-	});
-});
 
 
 
@@ -122,11 +65,13 @@ count_user = 0;
 count_posts = 0;
 count_likes = 0; 
 
+var secret = require('./secret.js');
+
 //URL-generator
 function url_gen () {
-	this.fields = 'id,likes,statuses,posts,checkins,activities,name,address,updated_time,first_name,last_name,username,birthday,picture,hometown,gender,locale,locations,relationship_status';
+	this.fields = 'id,likes,statuses,checkins,activities,name,address,updated_time,first_name,last_name,username,birthday,hometown,gender,locale,locations,relationship_status';
 	this.query = 'james';
-	this.access_token = '';
+	this.access_token = require('./secret.js').personalApiKey;
 	this.type = 'user';
 	this.limit = 1;
 	this.offset = 0;
@@ -162,15 +107,19 @@ function consumeUser(user_) {
 	}
 	
 	console.log('-----------------\nconsume User '+user_.id+'\namount of calls: '+(count_likes+count_user));
-	
+	console.warn(user_);
 	//User der map beifügen
 	user.add(user_);
 	
+	//relationship_status
+	if (user_.relationship_status)
+		console.warn('user has relationship_status!!!');
+	
 	//likes
-	consumeLikes(user.likes, user_.id, true);
+	//consumeLikes(user.likes, user_.id, true);
 	
 	//posts
-	consumePosts(user_.posts, user_.id, true);
+	//consumePosts(user_.posts, user_.id, true);
 	
 	//checkins
 	if (user_.checkins)
@@ -422,14 +371,14 @@ function getUser(todo) {
 }
 
 //Start
-/*
+
 getUser(function(res){
 	console.warn(res);
 	
 	consumeUserPaging(res.paging);
 	consumeUser(res.data[0]);
 });
-*/
+
 
 
 /*
