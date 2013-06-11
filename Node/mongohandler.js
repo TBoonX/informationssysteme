@@ -36,6 +36,64 @@ exports.saveElement = function(element, collection) {
 	});
 };
 
+exports.getAllUseridsFromPPosts = function(callback) {
+	module.db.pposts.find({}, function(err, pposts) {
+	  var ids = [];
+	  if( err || !pposts) console.info("Could not read all pposts!");
+	  else pposts.forEach( function(ppost) {
+		  ids.push(parseInt(ppost.from.id));
+	  });
+	  callback(ids);
+	});
+};
+
+//Test
+/*
+exports.getAllUseridsFromPPosts(function(ids) {
+	console.log('Count of all userids: '+ids.length);
+});
+*/
 
 //exports.saveElement({a:1,test:'Kurt'}, 'test');
 //exports.saveElement({id:878732189723987213,a:1,test:'Marcel'}, 'test');
+
+
+/*
+var connectionString = "mongodb://infosys:InfoKirsten321@127.0.0.1"; // "username:password@example.com/mydb"
+var collections = ["test"];
+var mongojs = require('mongojs');
+//var db = mongojs(connectionString, collections);
+var db = mongojs('infosys:InfoKirsten321@127.0.0.1/test', ['test', 'test_locations']);
+
+
+db.test.save({email: "srirangan@gmail.com", password: "iLoveMongo", sex: "male"}, function(err, saved) {
+ console.log(err);
+  if( err || !saved ) console.log("User not saved");
+  else console.log("User saved");
+});
+
+db.test.find({sex: "male"}, function(err, users) {
+  if( err || !users) console.log("No male users found");
+  else users.forEach( function(maleUser) {
+    console.log(maleUser);
+  } );
+});
+
+db.test.update({email: "srirangan@gmail.com"}, {$set: {sex: "female"}}, function(err, updated) {
+  if( err || !updated ) console.log("User not updated");
+  else console.log("User updated");
+});
+
+db.test.find({sex: "male"}, function(err, users) {
+  if( err || !users) console.log("No male users found");
+  else users.forEach( function(maleUser) {
+    console.log(maleUser);
+  } );
+});
+*/
+
+/*
+db.test_locations.save({
+	
+});
+*/
