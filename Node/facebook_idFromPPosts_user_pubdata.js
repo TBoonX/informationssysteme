@@ -9,9 +9,10 @@ module.mongo = require('./mongohandler.js');
 module.https = require("https");
 
 module.idCount = 0;
+module.userConsumedCount = 0;
 
 process.on('exit', function () {
-    console.info('\nAmount of found users: '+module.idCount);
+    console.info('\nAmount of found users: '+module.userConsumedCount);
 	
 	console.info('\n..\nEXIT');
 });
@@ -20,25 +21,39 @@ exports.start = function() {
 	console.log('\nFacebook\n-------------------\n\nRead PPosts...');
 	
 	module.mongo.getAllUseridsFromPPosts(function(ids) {
-		console.log('\nGet '+ids.length+' Users from PPosts.\n\n');
-		
 		module.idCount = ids.length;
-		exports.consumeAllIds(ids);
+		
+		console.log('\nGet '+module.idCount+' Users from PPosts.\n\n');
+		
+		module.consumeAllIds(ids);
+		
+		//process.exit(0);
 	});
 };
-
+module.start = 0;module.end = 0;
 //Je 36 Ids parallel abfragen, je 5s warten
-exports.consumeAllIds = function(ids) {
+module.consumeAllIds = function(ids) {
+	
+	//Test
+	//ids.forEach(function(id){
+	for (var i = 0; i<ids.length; i++) {
+		var id = ids[i];
+		console.info('Get User with id '+id+'.');
+		module.getUserBy(id);
+	}
+	//});
+	
+	return;
 	var l = ids.length;
 	var i;
 	for (i = 0; i < l; i = i+36)
 	{
-		var end = (l > (i+36)) ? (i+36) : l;
-		var start = i;
+		module.end = (l > (i+36)) ? (i+35) : (l-1);
+		module.start = i;
 		setTimeout(function(){
-			module.execPack(ids, start, end);
+			module.execPack(ids, module.start, module.end);
 		  },
-		  start*50
+		  module.start*50
 		);
 	}
 };
@@ -57,6 +72,8 @@ module.execPack = function(ids, a, b) {
 };
 
 module.getUserBy = function(id) {
+	module.userConsumedCount++;
+	
 	//send http
 	var options = {
 	  hostname: 'graph.facebook.com',
@@ -107,7 +124,7 @@ module.getUserBy = function(id) {
 				  return;
 			  }
 			  //Wiederholung bei Fehler 109 (temporally server error)
-			  if (ret.error && ret.error.code == 190)
+			  if (ret.error && ret.error.code == 109)
 			  {
 				  setTimeout(function(){
 					  console.info('! "'+id+'" have to wait (temp error)...');
@@ -115,11 +132,21 @@ module.getUserBy = function(id) {
 				  }, 5000+parseInt(Math.random()*5000));
 				  return;
 			  }
+			  //Ausgabe bei Fehler 100 (wrong fields)
+			  if (ret.error && ret.error.code == 100)
+			  {
+				  //module.fail({stack: '? Wrong URL? -> https://'+options.hostname+options.path}, id);
+				  
+				  //Mostly an app instead of an user
+				  module.consumeOtherData({id: id}, id);
+				  
+				  return;
+			  }
 			  
 			  //Abbruch bei fehlerhaftem Key
 			  if (ret.error && ret.error.type == 'OAuthException')
 			  {
-				  module.fail({stack: ret}, query);
+				  module.fail({stack: ret}, id);
 				  return;
 			  }
 		  } catch (e) {
@@ -127,6 +154,7 @@ module.getUserBy = function(id) {
 			  //repeat
 			  setTimeout(function(){
 				  console.info('! "'+id+'" have to wait (too many requests)...');
+				  console.log(e);
 				  module.getUserBy(id);
 			  }, 10000+parseInt(Math.random()*10000));
 			  
@@ -168,9 +196,17 @@ module.consumeData = function(data, id) {
 	module.mongo.saveElement(data, 'user');
 };
 
+//Verarbeite gefundene Daten
+module.consumeOtherData = function(data, id) {
+	//module.exports.hitCount[query]++;
+	console.log('-> User-PPosts: found other data');
+	
+	module.mongo.saveElement(data, 'apps');
+};
+
 //Fehlerhandling
 module.fail = function(e, id) {
-	console.info('!!! User-PPosts: Error!'); 
+	console.info('!!! User-PPosts: Error! - id '+id); 
 	console.info( e.stack );
 	console.info('\n');
 	

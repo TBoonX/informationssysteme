@@ -86,7 +86,7 @@ module.consumePostsTest = function(next, query) {
 				  return;
 			  }
 			  //Wiederholung bei Fehler 109 (temporally server error)
-			  if (ret.error && ret.error.code == 190)
+			  if (ret.error && ret.error.code == 109)
 			  {
 				  setTimeout(function(){
 					  console.info('! "'+query+'" have to wait (temp error)...');

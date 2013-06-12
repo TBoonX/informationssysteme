@@ -2,7 +2,7 @@
  * Mongohandler
  */
 var secret = require('./secret.js');
-var collections = ["test", "pposts", "posts", "locations", "wstations", "user"];
+var collections = ["test", "pposts", "posts", "locations", "wstations", "user", "apps"];
 var mongojs = require('mongojs');
 module.db = mongojs(secret.mongoDBConStr, collections);
 
@@ -37,7 +37,7 @@ exports.saveElement = function(element, collection) {
 };
 
 exports.getAllUseridsFromPPosts = function(callback) {
-	module.db.pposts.find({}, function(err, pposts) {
+	module.db.pposts.find(function(err, pposts) {
 	  var ids = [];
 	  if( err || !pposts) console.info("Could not read all pposts!");
 	  else pposts.forEach( function(ppost) {
