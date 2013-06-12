@@ -33,28 +33,10 @@ exports.start = function() {
 module.start = 0;module.end = 0;
 //Je 36 Ids parallel abfragen, je 5s warten
 module.consumeAllIds = function(ids) {
-	
-	//Test
-	//ids.forEach(function(id){
 	for (var i = 0; i<ids.length; i++) {
 		var id = ids[i];
 		console.info('Get User with id '+id+'.');
 		module.getUserBy(id);
-	}
-	//});
-	
-	return;
-	var l = ids.length;
-	var i;
-	for (i = 0; i < l; i = i+36)
-	{
-		module.end = (l > (i+36)) ? (i+35) : (l-1);
-		module.start = i;
-		setTimeout(function(){
-			module.execPack(ids, module.start, module.end);
-		  },
-		  module.start*50
-		);
 	}
 };
 
