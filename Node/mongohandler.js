@@ -2,7 +2,7 @@
  * Mongohandler
  */
 var secret = require('./secret.js');
-var collections = ["test", "pposts", "posts", "locations", "wstations"];
+var collections = ["test", "pposts", "posts", "locations", "wstations", "user"];
 var mongojs = require('mongojs');
 module.db = mongojs(secret.mongoDBConStr, collections);
 

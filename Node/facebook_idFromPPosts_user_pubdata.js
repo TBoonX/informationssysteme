@@ -11,7 +11,7 @@ module.https = require("https");
 module.idCount = 0;
 
 process.on('exit', function () {
-    console.info('\nAmount of found data: '+exports.hits());
+    console.info('\nAmount of found users: '+module.idCount);
 	
 	console.info('\n..\nEXIT');
 });
@@ -30,23 +30,29 @@ exports.start = function() {
 //Je 36 Ids parallel abfragen, je 5s warten
 exports.consumeAllIds = function(ids) {
 	var l = ids.length;
-	for (var i = 0; i < l; i = i+36)
+	var i;
+	for (i = 0; i < l; i = i+36)
 	{
 		var end = (l > (i+36)) ? (i+36) : l;
-		
-		module.execPack(ids, i, end);
+		var start = i;
+		setTimeout(function(){
+			module.execPack(ids, start, end);
+		  },
+		  start*50
+		);
 	}
 };
 
 module.execPack = function(ids, a, b) {
-	for (var j = a; j < b; j++)
+	console.log('execPack ids from '+a+' to '+b);
+	//console.log(ids);
+	var j;
+	for (j = a; j < b; j++)
 	{
-		setTimeout(function(){
-			  console.info('Get User with id '+ids[j]+'.');
-			  module.getUserBy(ids[j]);
-		  },
-		  5000
-		);
+		var index = j;
+		console.log('id at index '+index);
+		console.info('Get User with id '+ids[index]+'.');
+		module.getUserBy(ids[index]);
 	}
 };
 
@@ -69,7 +75,7 @@ module.getUserBy = function(id) {
 	  
 	  //Bytes einsammeln
 	  res.on('end', function() {
-		  module.reqCount[query]++;
+		  //module.reqCount[query]++;
 		  
 		  var overallb = '';
 		  for (var i = 0; i < buffers.length; i++)
@@ -160,7 +166,6 @@ module.consumeData = function(data, id) {
 	console.log('-> User-PPosts: found userdata');
 	
 	module.mongo.saveElement(data, 'user');
-	
 };
 
 //Fehlerhandling
@@ -172,3 +177,7 @@ module.fail = function(e, id) {
 	//Callback
 	//module.callbacks[query](query);
 };
+
+
+//
+exports.start();
