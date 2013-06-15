@@ -1,4 +1,3 @@
-
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -36,8 +35,6 @@ public class Jamo {
             char escCode = 0x1B;
         
             String collname = "headrecords";
-		String dbuser = "infosys";
-		String dbpass = "InfoKirsten321";
 		MongoClient mongoClient;
 		mongoClient = new MongoClient( mongoip+":"+mongoport );
 		DB db = mongoClient.getDB( mongodb );
