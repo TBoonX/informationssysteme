@@ -1,4 +1,3 @@
-
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -30,33 +29,12 @@ import java.util.regex.Pattern;
  * @author m
  */
 public class Jamo {
-	public static void test(String importfile) throws IOException {
-		BufferedReader br = null;
-		
-		String sCurrentLine;
-		
-		String weatherfilepath = new java.io.File( importfile ).getCanonicalPath();
-        System.out.println("Trying to open file: " + weatherfilepath);
-        
-		
-		br = new BufferedReader(new FileReader(weatherfilepath));
-
-		while ((sCurrentLine = br.readLine()) != null) {
-			System.out.println(sCurrentLine);
-			System.out.println(" ID:" + sCurrentLine.substring(1, 6).trim());
-			
-		}
-		
-		
-	}
 //headrecordsger(importfile, mongoip, mongoport, mongodb, mongocoll, mongouser, mongopass );
             
-	public static void importall(String importfile, String mongoip, String mongoport, String mongodb, String mongocoll, String mongouser, String mongopass, int year) throws IOException {
+	public static void importderivated(String importfile, String mongoip, String mongoport, String mongodb, String mongocoll, String mongouser, String mongopass, int year) throws IOException {
             char escCode = 0x1B;
         
             String collname = "headrecords";
-		String dbuser = "infosys";
-		String dbpass = "InfoKirsten321";
 		MongoClient mongoClient;
 		mongoClient = new MongoClient( mongoip+":"+mongoport );
 		DB db = mongoClient.getDB( mongodb );
@@ -102,7 +80,7 @@ public class Jamo {
                                     //System.out.print('\b');
 
 
-                                    if(++n%10000 == 0) System.out.print(n + " ..... ");
+                                    if(++n%100000 == 0) System.out.print(n + " ..... ");
 
 
                                         String WETTERID  = sCurrentLine.substring(1, 6);   //   2-  6
@@ -177,7 +155,7 @@ public class Jamo {
                                     
                                     if(Integer.parseInt(sLastWeatherIdYear) >= year) {
                                     
-                                        if(++n%10000 == 0) System.out.print(n + " ..... ");
+                                        if(++n%100000 == 0) System.out.print(n + " ..... ");
 
                                         String PRESS        = sCurrentLine.substring(0, 7);
                                         String OBSGPH       = sCurrentLine.substring(9, 15);
@@ -284,7 +262,7 @@ public class Jamo {
                     
                         if(Integer.parseInt(sLastWeatherIdYear) >= year) {
                                     
-                                   if(++n%10000 == 0) System.out.print(n + " ..... ");
+                                   if(++n%100000 == 0) System.out.print(n + " ..... ");
 
                                         String PRESS        = sCurrentLine.substring(0, 7);
                                         String OBSGPH       = sCurrentLine.substring(9, 15);
@@ -315,7 +293,7 @@ public class Jamo {
                     
                     
                     } else {      //headline !
-                        if(++n%10000 == 0) System.out.print(n + " ..... ");
+                        if(++n%100000 == 0) System.out.print(n + " ..... ");
 
 
                                         String WETTERID  = sCurrentLine.substring(1, 6);   //   2-  6
@@ -420,31 +398,24 @@ public class Jamo {
         ////
         
         
-	public static void wstations(String importfile) throws IOException {
-		String collname = "wstations";
-		String dbuser = "infosys";
-		String dbpass = "InfoKirsten321";
-		MongoClient mongoClient;
-		mongoClient = new MongoClient( "127.0.0.1" );
-		DB db = mongoClient.getDB( "test" );
-		System.out.println("Try to connect:" + db.authenticate(dbuser, dbpass.toCharArray()));
+	public static void importderivedstations(String importfile, String mongoip, String mongoport, String mongodb, String mongocoll, String mongouser, String mongopass) throws IOException {
+            MongoClient mongoClient;
+            mongoClient = new MongoClient( mongoip+":"+mongoport );
+            DB db = mongoClient.getDB( mongodb );
+            System.out.println("Try to connect:" + db.authenticate(mongouser, mongopass.toCharArray()));
 		
-		//alte collection verwerfen
-		DBCollection coll = db.getCollection(collname);
-		coll.drop();
-		
-		//zaehlvariable fuer wartebildschirm
-		int n = 0;
-		
-		String weatherfilepath = new java.io.File( importfile ).getCanonicalPath();
-        System.out.println("Trying to open file: " + weatherfilepath);
-        
-        BufferedReader br = null;
-        
-        
-        
-        
-        Pattern pattern = Pattern.compile("^[0-9]{6}[ A-Z,0-9]{8}(?!SHIP)+.*");
+            //alte collection verwerfen
+            DBCollection coll = db.getCollection(mongocoll);
+            coll.drop();
+
+            //zaehlvariable fuer wartebildschirm
+            int n = 0;
+
+            String weatherfilepath = new java.io.File( importfile ).getCanonicalPath();
+            System.out.println("Trying to open file: " + weatherfilepath);
+
+            BufferedReader br = null;
+            Pattern pattern = Pattern.compile("^[0-9]{6}[ A-Z,0-9]{8}(?!SHIP)+.*");
         
         
 		try {
@@ -454,8 +425,8 @@ public class Jamo {
 			br = new BufferedReader(new FileReader(weatherfilepath));
  
 			while ((sCurrentLine = br.readLine()) != null) {
-				Matcher matcher = pattern.matcher(sCurrentLine); 
-				if(matcher.matches()) {	
+				//Matcher matcher = pattern.matcher(sCurrentLine); 
+				//if(matcher.matches()) {	
 					//System.out.println(sCurrentLine);
 					////wait function 
 					if(++n < 160 )System.out.print('.');
@@ -478,7 +449,7 @@ public class Jamo {
 							
 					coll.insert(doc);
 					
-				}
+				//}
 			}
  
 		} catch (IOException e) {
@@ -505,7 +476,209 @@ public class Jamo {
 	
 	}
 
-    /**
+        public static void importy2dstations(String importfile, String mongoip, String mongoport, String mongodb, String mongocoll, String mongouser, String mongopass) throws IOException {
+            MongoClient mongoClient;
+            mongoClient = new MongoClient( mongoip+":"+mongoport );
+            DB db = mongoClient.getDB( mongodb );
+            System.out.println("Try to connect:" + db.authenticate(mongouser, mongopass.toCharArray()));
+		
+            //alte collection verwerfen
+            DBCollection coll = db.getCollection(mongocoll);
+            coll.drop();
+
+            //zaehlvariable fuer wartebildschirm
+            int n = 0;
+
+            String weatherfilepath = new java.io.File( importfile ).getCanonicalPath();
+            System.out.println("Trying to open file: " + weatherfilepath);
+
+            BufferedReader br = null;
+            //Pattern pattern = Pattern.compile("^[0-9]{6}[ A-Z,0-9]{8}(?!SHIP)+.*");
+        
+        
+		try {
+ 
+			String sCurrentLine;
+ 
+			br = new BufferedReader(new FileReader(weatherfilepath));
+ 
+			while ((sCurrentLine = br.readLine()) != null) {
+				//Matcher matcher = pattern.matcher(sCurrentLine); 
+				//if(matcher.matches()) {	
+					//System.out.println(sCurrentLine);
+					////wait function 
+					if(++n%100 == 0) System.out.print(n+" ..... ");
+					
+                                        
+                                        //
+                                        String COUNTRYCODE  = sCurrentLine.substring(0, 2).trim();
+					String STATIONID    = sCurrentLine.substring(3, 9).trim();
+					String STATIONNAME  = sCurrentLine.substring(10, 47).trim();
+					Float LAT          = Float.parseFloat(sCurrentLine.substring(47, 53));
+					Float LON          = Float.parseFloat(sCurrentLine.substring(55, 61));
+					
+                                        //System.out.println(sCurrentLine);
+                                        //System.out.println(COUNTRYCODE+" "+STATIONID+" "+STATIONNAME+" "+LAT+" "+LON+" ");
+                                        
+					BasicDBObject doc = new BasicDBObject("stationid", STATIONID).
+							append("stationname", STATIONNAME).
+							append("countrycode", COUNTRYCODE).
+							append("lat", LAT).
+							append("lon", LON);
+							
+					coll.insert(doc);
+					
+				//}
+			}
+ 
+		} catch (IOException e) {
+			e.printStackTrace();
+        
+		}
+	
+		DBCursor cursor = coll.find();
+//		try {
+//		   while(cursor.hasNext()) {
+//		       System.out.println(cursor.next());
+//		       
+//		   }
+//		} finally {
+//		   cursor.close();
+//		}
+//
+//		System.out.println(coll.count() + " Wetterstationen y2d eingefuegt.");
+		
+	
+	
+	
+	}
+
+        
+        public static void importy2d(String importfile, String mongoip, String mongoport, String mongodb, String mongocoll, String mongouser, String mongopass, int year) throws IOException {
+            char escCode = 0x1B;
+        
+            MongoClient mongoClient;
+            mongoClient = new MongoClient( mongoip+":"+mongoport );
+            DB db = mongoClient.getDB( mongodb );
+            System.out.println("Try to connect:" + db.authenticate(mongouser, mongopass.toCharArray()));
+
+            //alte collection verwerfen
+            DBCollection coll = db.getCollection(mongocoll);
+            coll.drop();
+
+            //zaehlvariable fuer wartebildschirm
+            int n = 0;
+
+            String weatherfilepath = new java.io.File( importfile ).getCanonicalPath();
+            System.out.println("Trying to open file: " + weatherfilepath);
+        
+            BufferedReader br = null;
+        
+            //Pattern pattern = Pattern.compile("^[0-9]{6}[ A-Z,0-9]{8}(?!SHIP)+.*");
+        
+        
+		
+                    String sCurrentLine = "";
+                    String sLastWeatherId = "";
+                    String sLastWeatherIdYear = "";
+                    long yearsIgnored = 0;
+                    br = new BufferedReader(new FileReader(weatherfilepath));
+
+                    String STATIONID    = "";
+                    String YEAR         = "";
+                    String MONTH        = "";
+                    String DAY          = "";
+                    String HOUR         = "";
+                    
+                    
+                    System.out.println("Beginning import files - please standby ...");
+
+                    while ((sCurrentLine = br.readLine()) != null) {
+                        if(sCurrentLine.charAt(0) == '#') {      //headline ??
+                            //Matcher matcher = pattern.matcher(sCurrentLine); 
+                            //if(matcher.matches()) {	
+                            //System.out.println(sCurrentLine);
+                            ////wait function 
+                            //if(++n < 160 )System.out.print('.');
+                            //else {n=0; System.out.println(".");}
+                            ////
+
+
+                            //if(++n%2 == 0) System.out.print("-");
+                            //else System.out.print("|");
+                            //System.out.print('\b');
+
+
+                            //if(++n%10000 == 0) System.out.print(n + " ..... ");
+
+
+                            STATIONID  = sCurrentLine.substring(1, 6);   //   2-  6
+                            YEAR  = sCurrentLine.substring(6, 10);      //   7- 10
+                            MONTH  = sCurrentLine.substring(10, 12);     //  11- 12
+                            DAY  = sCurrentLine.substring(12, 14);       //  13- 14
+                            HOUR  = sCurrentLine.substring(14, 16);      //  15- 16
+                            
+                            //sLastWeatherId = STATIONID + YEAR + MONTH + DAY + HOUR;
+                            sLastWeatherIdYear = YEAR;
+
+                            if(Integer.parseInt(sLastWeatherIdYear) >= year) {
+
+                                //System.out.println(sCurrentLine);
+                                //System.out.println("SID: " + STATIONID + " Y: " + YEAR + " M: " + MONTH + " D:" + DAY + " H:" + HOUR);
+                            
+                                
+
+//                            BasicDBObject doc = new BasicDBObject("wetterid", STATIONID).
+//                                            append("year", YEAR).
+//                                            append("month", MONTH).
+//                                            append("day", DAY).
+//                                            append("hour", HOUR);
+//                            
+//                            coll.insert(doc);
+                        } else yearsIgnored++;
+                    } else {    // keine headline
+                        //no to old years && only measueres on surface
+                        if((Integer.parseInt(sLastWeatherIdYear) >= year) && (sCurrentLine.charAt(1) == '1')) {
+
+                            if(++n%10000 == 0) System.out.print(n + " ..... ");
+
+                            String PRESS        = sCurrentLine.substring(2, 8);
+                            String TEMP         = sCurrentLine.substring(15, 20);
+                            String WIND         = sCurrentLine.substring(31, 36);
+                            
+                            //System.out.println(sCurrentLine);
+                            //System.out.println("P: " + PRESS + " T: " + TEMP + " W: " + WIND);
+                            
+                            BasicDBObject doc = new BasicDBObject("stationid", STATIONID).
+                                append("year",      YEAR).
+                                append("month",     MONTH).
+                                append("day",       DAY).
+                                append("hour",      HOUR).
+                                append("press",     PRESS).
+                                append("temp",      TEMP).
+                                append("wind",      WIND);
+
+                            coll.insert(doc);
+                    } else yearsIgnored++;
+                }
+            }
+            DBCursor cursor = coll.find();
+
+            System.out.println("\n\nDie ersten (max.) 10 Datensätze: ");
+            int m = 0;
+
+            while(cursor.hasNext()) {
+                System.out.println(cursor.next());
+                if(++m >= 10) break;
+            }
+            cursor.close();
+
+            System.out.println("Collection " + mongocoll + " in Datenbank " + mongodb + " enthaelt nun " + coll.count() + " Datensaetze.");
+            System.out.println("zu alte Datensaetze ignoriert (Parameter -y"+year+"): " + yearsIgnored);
+	}
+
+        
+     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) throws IOException {
@@ -514,6 +687,7 @@ public class Jamo {
         
         
         String importfile   = "";	// -f
+        String filetyp      = "";
         String mongoip      = "";       // -i
         String mongoport    = "";       // -p
         String mongodb      = "";       // -d
@@ -522,9 +696,10 @@ public class Jamo {
         String mongopass    = "";       // -P
         Integer year        = 2000;     // -y
 
-        if(args.length == 16) {
+        if(args.length == 18) {
             for (int n = 0; n < (args.length-1); n++) {
                 if (args[n].toString().equals("-f")) importfile = args[n+1].toString();
+                if (args[n].toString().equals("-t")) filetyp    = args[n+1].toString();
                 if (args[n].toString().equals("-i")) mongoip    = args[n+1].toString();
                 if (args[n].toString().equals("-p")) mongoport  = args[n+1].toString();
                 if (args[n].toString().equals("-d")) mongodb    = args[n+1].toString();
@@ -534,15 +709,25 @@ public class Jamo {
                 if (args[n].toString().equals("-y")) year       = Integer.parseInt(args[n+1].toString());
             } 
         
-            //wstations();
-            importall(importfile, mongoip, mongoport, mongodb, mongocoll, mongouser, mongopass, year);
-            //test();
-            
-    
-    
-        
+            if(filetyp.equals("derivated")) {
+                System.out.println("processing derivated");
+                importderivated(importfile, mongoip, mongoport, mongodb, mongocoll, mongouser, mongopass, year);
+            } else if (filetyp.equals("y2d")) {
+                System.out.println("processing y2d");
+                importy2d(importfile, mongoip, mongoport, mongodb, mongocoll, mongouser, mongopass, year);
+            } else if (filetyp.equals("derivedstations")) {
+                System.out.println("processing derivedstations");
+                importderivedstations(importfile, mongoip, mongoport, mongodb, mongocoll, mongouser, mongopass);
+            } else if (filetyp.equals("y2dstations")) {
+                System.out.println("processing y2dstations");
+                importy2dstations(importfile, mongoip, mongoport, mongodb, mongocoll, mongouser, mongopass);
+            } else {
+                System.out.println("ERROR: wrong filetype - possible are: y2d dreivated derivedstations y2dstations");
+                System.out.println("usage: jamo -f <imporfile> -t <filetyp:y2d|derivated|derivedstations|y2dstations> -i <mongoip> -p <mongoport> -d <db> -c <collection> -u <dbuser> -P <dbpass> -y <year>");
+            }
         } else {
-            System.out.println("usage: jamo -f <imporfile> -i <mongoip> -p <mongoport> -d <db> -c <collection> -u <dbuser> -P <dbpass> -y <year>");
+            System.out.println("ERROR: wrong parameter count");
+            System.out.println("usage: jamo -f <imporfile> -t <filetyp:y2d|derivated|wstations> -i <mongoip> -p <mongoport> -d <db> -c <collection> -u <dbuser> -P <dbpass> -y <year>");
         
         }
 

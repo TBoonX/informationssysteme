@@ -2,7 +2,7 @@
  * Mongohandler
  */
 var secret = require('./secret.js');
-var collections = ["test", "pposts", "posts", "locations", "wstations", "user", "apps"];
+var collections = ["test", "pposts", "posts", "locations", "wstations", "user", "apps", "pposts_tmp", "y2dstations"];
 var mongojs = require('mongojs');
 module.db = mongojs(secret.mongoDBConStr, collections);
 
@@ -41,9 +41,25 @@ exports.getAllUseridsFromPPosts = function(callback) {
 	  var ids = [];
 	  if( err || !pposts) console.info("Could not read all pposts!");
 	  else pposts.forEach( function(ppost) {
-		  ids.push(parseInt(ppost.from.id));
+		  try{ids.push(parseInt(ppost.from.id));}catch(e){console.info(e);}
 	  });
 	  callback(ids);
+	});
+};
+
+exports.getAllFromCollection = function(collection, callback) {
+	module.db[collection].find(function(err, elements) {
+	  if( err || !elements)
+		  console.info("Could not read all elements of collection "+collection+"!");
+	  else
+		  callback(elements);
+	});
+};
+
+exports.update = function(collection, filter, update) {
+	module.db[collection].update(filter, update, function(err) {
+		if (err)
+			console.info('!!! Could not update: '+err);
 	});
 };
 

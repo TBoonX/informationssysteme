@@ -10,3 +10,8 @@
 
 Nutzer:
 { user: "infosys", pwd: "InfoKirsten321", roles: [ "readWrite" ] }
+
+
+
+Infos:
+Bottom-up Schemaintegration
