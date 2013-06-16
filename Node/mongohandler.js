@@ -2,10 +2,8 @@
  * Mongohandler
  */
 var secret = require('./secret.js');
-var collections = ["pposts", "user", "apps", "pposts_tmp", "y2dstations", "wetter", 
-"output1", "output2"];
 var mongojs = require('mongojs');
-module.db = mongojs(secret.mongoDBConStr, collections);
+module.db = mongojs(secret.mongoDBConStr, secret.collections);
 
 //Macht aus id _id
 module.objectIdTo_id = function (object) {
@@ -57,10 +55,28 @@ exports.getAllFromCollection = function(collection, callback) {
 	});
 };
 
+exports.find = function(collection, filter, callback) {
+	module.db[collection].find(filter, function(err, elements) {
+		if( err || !elements)
+			  console.info("Could not find elements of collection "+collection+"!");
+	    else
+		      callback(elements);
+	});
+};
+
 exports.update = function(collection, filter, update) {
 	module.db[collection].update(filter, update, function(err) {
 		if (err)
 			console.info('!!! Could not update: '+err);
+	});
+};
+
+exports.mapReduce = function(collection, map, reduce, outputcollection) {
+	module.db[collection].mapReduce(map, reduce, {out: {reduce: outputcollection}, verbose:true}, function(err) {
+		if (err)
+			console.info('!!! mapReduce error: '+err);
+		else
+			console.info('mapReduce finish');
 	});
 };
 
