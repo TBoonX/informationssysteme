@@ -41,7 +41,7 @@ var map_posts = function() {
 	
 	var values = {
 			location: location,
-			date: this.cerated_time,
+			date: this.created_time,
 			ppostid: this._id
 	};
 	
@@ -78,6 +78,9 @@ var reduce = function(k, values) {
 			result.locations.push(value);
 		}
 	});
+	
+	if (!result.locations)
+		return null;
 	
 	return result;
 };
