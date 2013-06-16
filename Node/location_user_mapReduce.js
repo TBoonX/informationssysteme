@@ -79,9 +79,6 @@ var reduce = function(k, values) {
 		}
 	});
 	
-	if (!result.locations)
-		return null;
-	
 	return result;
 };
 
