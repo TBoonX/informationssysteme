@@ -86,12 +86,15 @@ exports.update = function(collection, filter, update) {
 	});
 };
 
-exports.mapReduce = function(collection, map, reduce, outputcollection) {
+exports.mapReduce = function(collection, map, reduce, outputcollection, callback) {
 	module.db[collection].mapReduce(map, reduce, {out: {reduce: outputcollection}, verbose:true}, function(err) {
 		if (err)
 			console.info('!!! mapReduce error: '+err);
 		else
-			console.info('mapReduce finish');
+		{
+			console.info('mapReduce finish on '+collection);
+			callback();
+		}
 	});
 };
 

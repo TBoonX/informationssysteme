@@ -85,5 +85,6 @@ var reduce = function(k, values) {
 console.log('\nMap Reduce on pposts and user\n-------------------\n\n');
 
 //db.pposts.mapReduce(map, reduce, {"out": { "reduce": "output" }});
-module.mongo.mapReduce("test2", map_user, reduce, "output1");
-module.mongo.mapReduce("test1", map_posts, reduce, "output1");
+module.mongo.mapReduce("test2", map_user, reduce, "output1", function(){
+	module.mongo.mapReduce("test1", map_posts, reduce, "output1", function(){});
+});

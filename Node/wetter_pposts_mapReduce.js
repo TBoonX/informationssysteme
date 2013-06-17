@@ -22,22 +22,26 @@ var map_posts = function() {
 		var year = ct.substring(0,4);
 		var month = ct.substring(5,7);
 		var day = ct.substring(8,10);
-		var hour = ct.substring(11,13);
+		//var hour = ct.substring(11,13);
 		
 		return {
 			year: year,
 			month: month,
-			day: day,
-			hour: hour
+			day: day
+			//,hour: hour
 		};
 	};
 	
+	var date = this.created_time;
+	
 	//loop through stations
 	this.place.location.nearestStations.forEach(function(station) {
-		var key = dateConsumer(this.created_time);
-		key.stationid = station.id;
-		
-		emit(key, values);
+		try {
+			var key = dateConsumer(date);
+			key.stationid = station.id;
+			
+			emit(key, values);
+		} catch(e) {  }
 	});
 	
 };
@@ -48,15 +52,16 @@ var map_wetter = function(){
 	var values = {
 			pressure: this.press,
 			windspeed: this.wind,
-			temperatur: this.temp
+			temperatur: this.temp,
+			hour: this.hour
 	};
 	
 	var key = {
-			stationid: this.stationid,
 			year: this.year,
 			month: this.month,
 			day: this.day,
-			hour: this.hour
+			//hour: this.hour,
+			stationid: this.stationid
 	};
 	
 	
@@ -72,18 +77,23 @@ var reduce = function(k, values) {
 			if (!("locations" in result)) {
 				result.locations = [];
 			}
-			result.location.push(value);
+			result.locations.push(value);
 		}
 		else if ("temperatur" in value) {
-			result.weather = value;
+			if (!("weather" in result)) {
+				result.weather = [];
+			}
+			
+			result.weather.push(value);
 		}
 	});
 	
 	return result;
 };
 
-console.log('\nMap Reduce on pposts and wetter\n-------------------\n\n');
+console.log('\nMap Reduce on pposts and wetter_2013\n-------------------\n\n');
 
 //db.pposts.mapReduce(map, reduce, {"out": { "reduce": "output" }});
-module.mongo.mapReduce("wetter", map_wetter, reduce, "output2");
-//module.mongo.mapReduce("pposts", map_posts, reduce, "output2");
+module.mongo.mapReduce("wetter_2013", map_wetter, reduce, "output2", function() {
+	module.mongo.mapReduce("pposts", map_posts, reduce, "output2", function(){});
+});
