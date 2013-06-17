@@ -98,6 +98,18 @@ exports.mapReduce = function(collection, map, reduce, outputcollection, callback
 	});
 };
 
+exports.clean = function(collection, necessaryParameters) {
+	necessaryParameters.forEach(function(p) {
+		var filter = {};
+		filter[p] = {$exists: false};
+		module.db[collection].remove(filter, {}, function(err) {
+			if (err)
+				console.info('clean on '+collection+' with '+p+' failed!');
+		});
+	});
+	console.log('clean on '+collection+' finished.');
+};
+
 //Test
 /*
 exports.getAllUseridsFromPPosts(function(ids) {

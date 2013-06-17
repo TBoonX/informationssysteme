@@ -10,37 +10,8 @@ var map_posts = function() {
 	if (!this.place || !this.place.location || !this.place.location.latitude || !this.from || !this.from.id)
 		return;
 	
-	var location = {
-		latitude: this.place.location.latitude,
-		longitude: this.place.location.longitude,
-		address: {}
-	};
-	
-
-	try {
-		location.address.country = this.place.location.country;
-	} catch (e) {
-	}
-	try {
-		location.address.state = this.place.location.state;
-	} catch (e) {
-	}
-	try {
-		location.address.city = this.place.location.city;
-	} catch (e) {
-	}
-	try {
-		location.address.zip = this.place.location.zip;
-	} catch (e) {
-	}
-	try {
-		location.address.street = this.place.location.street;
-	} catch (e) {
-	}
-	
-	
 	var values = {
-			location: location,
+			location: this.place.location,
 			date: this.created_time,
 			ppostid: this._id
 	};
@@ -85,6 +56,9 @@ var reduce = function(k, values) {
 console.log('\nMap Reduce on pposts and user\n-------------------\n\n');
 
 //db.pposts.mapReduce(map, reduce, {"out": { "reduce": "output" }});
-module.mongo.mapReduce("test2", map_user, reduce, "output1", function(){
-	module.mongo.mapReduce("test1", map_posts, reduce, "output1", function(){});
+module.mongo.mapReduce("user", map_user, reduce, "output1", function(){
+	module.mongo.mapReduce("pposts", map_posts, reduce, "output1", function(){
+		//clean
+		module.mongo.clean('output1', ['value.locations', 'value.user']);
+	});
 });

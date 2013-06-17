@@ -16,7 +16,7 @@ exports.start = function() {
 	console.log('\nMatch PPosts with weatherstations\n-------------------\n\n');
 	
 	//Get all stations
-	module.mongo.getAllFromCollection('y2dstations', module.continueWithStations);
+	module.mongo.getAllFromCollection('relevant_stations', module.continueWithStations);
 };
 
 //Save stations and continue with pposts
