@@ -58,7 +58,22 @@ exports.getAllFromCollection = function(collection, callback) {
 exports.find = function(collection, filter, callback) {
 	module.db[collection].find(filter, function(err, elements) {
 		if( err || !elements)
-			  console.info("Could not find elements of collection "+collection+"!");
+		{	  
+			console.info("Could not find elements of collection "+collection+"!");
+			console.info(err);
+		}
+	    else
+		      callback(elements);
+	});
+};
+
+exports.find = function(collection, filter, attributes, callback) {
+	module.db[collection].find(filter, attributes, function(err, elements) {
+		if( err || !elements)
+		{	  
+			console.info("Could not find elements of collection "+collection+"!");
+			console.info(err);
+		}
 	    else
 		      callback(elements);
 	});
