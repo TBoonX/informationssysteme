@@ -42,9 +42,9 @@ var map = function() {
 		
 		var i = 0;
 		var w = {
-			temperature: -999999,
-			pressure: -9999999,
-			wind: -9999999
+			temperatur: -9999,
+			pressure: -9999,
+			wind: -9999
 		};
 		
 		var diff = 24;
@@ -55,8 +55,8 @@ var map = function() {
 			if (date_o.hour == weat.hour)
 			{
 				w.pressure = weat.pressure;
-				w.wind = weat.wind;
-				w.temperature = weat.temperature;
+				w.wind = weat.windspeed;
+				w.temperatur = weat.temperatur;
 				
 				break;
 			}
@@ -67,8 +67,8 @@ var map = function() {
 				if (d < diff)
 				{
 					w.pressure = weat.pressure;
-					w.wind = weat.wind;
-					w.temperature = weat.temperature;
+					w.wind = weat.windspeed;
+					w.temperatur = weat.temperatur;
 					
 					diff = d;
 				}
@@ -80,7 +80,8 @@ var map = function() {
 		var value = {
 			weather: w,
 			location: l,
-			distance: distance
+			distance: distance,
+			created_time: date
 		};
 		
 		emit(postid, value);
@@ -93,6 +94,8 @@ var reduce = function(k, values) {
 		
 		location: null,
 		
+		created_time: '',
+		
 		concreteWeather: [],
 		
 		averageWeather: {}
@@ -100,7 +103,7 @@ var reduce = function(k, values) {
 	};
 	
 	values.forEach(function(value) {
-		if ( ("weather" in value) && ("location" in value) &&("distance" in value)) {
+		if ( ("weather" in value) && ("location" in value) && ("distance" in value)) {
 			if (result.location && ( result.location.latitude != value.location.latitude || result.location.longitude != value.location.longitude )  )
 				throw 'difference in location';
 			
@@ -108,6 +111,11 @@ var reduce = function(k, values) {
 			var w = value.weather;
 			w.distance = value.distance;
 			result.concreteWeather.push(w);
+			
+			if (result.created_time && result.created_time != value.created_time )
+				throw 'difference in created_time';
+			
+			result.created_time = value.created_time;
 		}
 		else if (("concreteWeather" in value)) {
 			result.concreteWeather = result.concreteWeather.concat(value.concreteWeather);
@@ -126,18 +134,21 @@ var reduce = function(k, values) {
 	var buf_pres = 0;
 	
 	result.concreteWeather.forEach(function(weather) {
-		buf_wind += weather.wind*weather.distance;
-		buf_temp += weather.temperature*weather.distance;
-		buf_pres += weather.pressure*weather.distance;
+		if (parseInt(weather.wind) != -9999)
+			buf_wind += parseInt(weather.wind)*weather.distance;
+		if (parseInt(weather.temperatur) != -9999)
+			buf_temp += parseInt(weather.temperatur)*weather.distance;
+		if (parseInt(weather.pressure) != -9999)
+			buf_pres += parseInt(weather.pressure)*weather.distance;
 		
 	});
 	buf_wind /= overalldistance;
 	buf_temp /= overalldistance;
 	buf_pres /= overalldistance;
 	
-	result.averageWeather.wind = buf_wind;
-	result.averageWeather.pressure = buf_pres;
-	result.averageWeather.temperature = buf_temp/10;
+	result.averageWeather.wind = Math.round(buf_wind/10);
+	result.averageWeather.pressure = Math.round(buf_pres);
+	result.averageWeather.temperatur = Math.round(buf_temp/10);
 	
 	
 	return result;
@@ -147,6 +158,6 @@ console.log('\nMap Reduce on output2\n-------------------\n\n');
 module.mongo.removeAll('result_weather', function() {
 	module.mongo.mapReduce("output2", map, reduce, "result_weather", function(){
 		//clean
-		//module.mongo.clean('result_weather', ['']);
+		module.mongo.clean('result_weather', ['value.averageWeather']);
 	});
 });
