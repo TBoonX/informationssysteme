@@ -50,9 +50,9 @@ var map_posts = function() {
 var map_wetter = function(){
 	
 	var values = {
-			pressure: this.press.replace(" ", ""),	//remove whitespaces
-			windspeed: this.wind.replace(" ", ""),
-			temperatur: this.temp.replace(" ", ""),
+			pressure: this.press.replace(" ", "").replace(" ", "").replace(" ", ""),	//remove whitespaces
+			windspeed: this.wind.replace(" ", "").replace(" ", "").replace(" ", ""),
+			temperatur: this.temp.replace(" ", "").replace(" ", "").replace(" ", ""),
 			hour: this.hour
 	};
 	

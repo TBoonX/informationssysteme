@@ -20,6 +20,6 @@ module.mongo.getAllFromCollection('result_gender', function(elements) {
 			module.selected.push(x);
 	});
 	
-	console.log('durch');
+	console.log('------------------------\nData with more than 6 users:');
 	console.log(module.selected);
 });
