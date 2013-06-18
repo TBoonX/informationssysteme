@@ -50,9 +50,9 @@ var map_posts = function() {
 var map_wetter = function(){
 	
 	var values = {
-			pressure: this.press,
-			windspeed: this.wind,
-			temperatur: this.temp,
+			pressure: this.press.replace(" ", ""),	//remove whitespaces
+			windspeed: this.wind.replace(" ", ""),
+			temperatur: this.temp.replace(" ", ""),
 			hour: this.hour
 	};
 	
@@ -79,12 +79,27 @@ var reduce = function(k, values) {
 			}
 			result.locations.push(value);
 		}
-		else if ("temperatur" in value) {
+		if ("temperatur" in value) {
 			if (!("weather" in result)) {
 				result.weather = [];
 			}
-			
 			result.weather.push(value);
+		}
+		if ("weather" in value)
+		{
+			if (!("weather" in result)) {
+				result.weather = [];
+			}
+			//result.weather.push.apply(result.weather, value.weather);
+			result.weather = result.weather.concat(value.weather);
+		}
+		if ("locations" in value)
+		{
+			if (!("locations" in result)) {
+				result.locations = [];
+			}
+			//result.locations.push.apply(result.locations, value.locations);
+			result.locations = result.locations.concat(value.locations);
 		}
 	});
 	
@@ -95,5 +110,12 @@ console.log('\nMap Reduce on pposts and wetter_2013\n-------------------\n\n');
 
 //db.pposts.mapReduce(map, reduce, {"out": { "reduce": "output" }});
 module.mongo.mapReduce("wetter_2013", map_wetter, reduce, "output2", function() {
-	module.mongo.mapReduce("pposts", map_posts, reduce, "output2", function(){});
+	module.mongo.mapReduce("pposts", map_posts, reduce, "output2", function(){
+		module.mongo.clean('output2', ['value.weather', 'value.locations']);
+	});
 });
+/*
+module.mongo.mapReduce("pposts", map_posts, reduce, "output2", function(){
+		module.mongo.clean('output2', ['value.weather', 'value.locations']);
+	});
+*/

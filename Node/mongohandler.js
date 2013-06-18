@@ -110,6 +110,18 @@ exports.clean = function(collection, necessaryParameters) {
 	console.log('clean on '+collection+' finished.');
 };
 
+exports.removeAll = function(collection, callback) {
+	module.db[collection].remove(function(err) {
+		if (err)
+			console.info('!!! removeAll error: '+err);
+		else
+		{
+			console.log('all removed from '+collection);
+			callback();
+		}
+	});
+};
+
 //Test
 /*
 exports.getAllUseridsFromPPosts(function(ids) {

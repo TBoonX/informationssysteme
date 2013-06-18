@@ -42,11 +42,25 @@ var reduce = function(k, values) {
 				result.user = {};
 			result.user.gender = value.gender;
 		}
-		else if ("location" in value) {
+		if ("location" in value) {
 			if (!("locations" in result)) {
 				result.locations = [];
 			}
 			result.locations.push(value);
+		}
+		if ("user" in value)
+		{
+			if (!result.user)
+				result.user = {};
+			result.user.gender = value.user.gender;
+		}
+		if ("locations" in value)
+		{
+			if (!("locations" in result)) {
+				result.locations = [];
+			}
+			//result.locations.push.apply(result.locations, value.locations);
+			result.locations = result.locations.concat(value.locations);
 		}
 	});
 	
