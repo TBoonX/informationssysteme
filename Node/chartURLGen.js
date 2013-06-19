@@ -1,5 +1,7 @@
 /**
  * https://chart.googleapis.com/chart?cht=p3&chs=700x400&chd=t:60,30,10&chl=41%20grad|40grad%20|37%20grad
+ * //chart.googleapis.com/chart?chxr=0,-29,41&chxs=0,676767,10.5,0,l,676767|1,676767,10.5,0,lt,676767&chxt=x,y&chs=440x220&cht=lc&chco=3072F3&chds=-29,41&chd=t:-29,1,1,12,20,6,40,5&chdl=Posts&chdlp=b&chls=2,4,1&chma=5,5,5,25|0,5
+ * //chart.googleapis.com/chart?chxr=0,-30,50|1,0,30&chxt=x,y&chs=680x340&cht=lxy&chco=3072F3&chds=-30,50,0,30&chd=t:-29,0,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41|1,1,1,10,10,6,7,8,19,16,2,4,13,25,20,22,16,16,16,15,16,21,12,13,25,19,10,11,2,3,16,22,18,12,13,8,3,5,2,3,1,3&chdl=Posts&chdlp=b&chg=5,10&chls=2&chma=5,5,5,25|0,5&chtt=Amount+of+posts+at+specific+temperatures
  */
 var https = require("https");
 var mongo = require('./mongohandler.js');
@@ -7,79 +9,33 @@ var mongo = require('./mongohandler.js');
 mongo.getAllFromCollection('temperatures', function(elements) {
 	var ex = {};
 	var count = 0;
+	
+	var temperatures = '';
+	var counts = '';
+	var c_max = t_max = -999, t_min = c_min = 999;
+	
 	elements.forEach(function(e) {
-		if (e._id > -200 && e._id < 150)
+		if (e._id > -200 && e._id < 60)
 		{
-			ex[e._id] = e.value;
+			if (t_min > e._id)
+				t_min = e._id;
+			if (t_max < e._id)
+				t_max = e._id;
+			if (c_min > e.value)
+				c_min = e.value;
+			if (c_max < e.value)
+				c_max = e.value;
 			
-			count += e.value;
+			temperatures += e._id+',';
+			counts += e.value+',';
 		}
+		
+		
 	});
+	//console.log(t_min+' '+t_max+' '+c_min+' '+c_max);
+	temperatures = temperatures.substring(0, temperatures.length-1);
+	counts = counts.substring(0, counts.length-1);
 	
-	console.log('count: '+count+'\n');
+	//console.log('https://chart.googleapis.com/chart?chs=500x300&cht=lxy&chco=3072F3&chds=0,100,-30,50&chdl=Test&chdlp=b&chls=2,4,1&chma=5,5,5,25&chd=t:'+temperatures+'|'+counts);
+	console.log('https://chart.googleapis.com/chart?chxr=0,'+(t_min-1)+','+(t_max+1)+'|1,0,'+(c_max+1)+'&chxt=x,y&chs=680x340&cht=lxy&chco=3072F3&chds='+(t_min-1)+','+(t_max+1)+','+(c_min-1)+','+(c_max+1)+'&chd=t:'+temperatures+'|'+counts+'&chdl=Posts&chdlp=b&chg=5,10&chls=2&chma=5,5,5,25|0,5&chtt=Amount+of+posts+at+specific+temperatures');
 	
-	var procent = '', names = '';
-	var overallpro = 0;
-	for (c in ex)
-	{
-		var p = Math.round((ex[c]/count)*100);
-		
-		procent += p+',';
-		names += c+' Grad|';
-		
-		
-	}
-	
-	procent = procent.substring(0, procent.length-1);
-	names = names.substring(0, names.length-1);
-	
-	console.log(procent);
-	console.log(names);
-});
-
-/*
-		var options = {
-		  hostname: 'chart.googleapis.com',
-		  port: 443,
-		  path: '/chart?cht=p3&chs=700x400&chd=t:',
-		  method: 'GET'
-		};
-		
-		var buffers = [];
-		
-		console.log('consumeLikes: call https://'+options.hostname+options.path);
-		
-		var req = https.request(options, function(res) {
-		  console.log("consumeLikes: statusCode: ", res.statusCode);
-
-		  res.on('data', function(d) {
-		    console.log('consumeLikes: bytelength: '+d.length);
-		    
-		    buffers.push(d);
-		  });
-		  
-		  res.on('end', function() {
-			  console.warn('consumeLikes: closed!');
-			  
-			  count_likes++;
-			  
-			  var overallb = '';
-			  for (var i = 0; i < buffers.length; i++)
-			  {
-				  overallb = overallb+buffers[i].toString('utf8');
-			  }
-			  
-			  console.log('consumeLikes: length of all: '+overallb.length);
-			  consumeLikes(JSON.parse(overallb), id, false);
-		  });
-		});
-		req.end();
-
-		req.on('error', function(e) {
-			console.log('Error with likes of person '+id+': '+ e.message); 
-			console.log( e.stack );
-			
-			user.feedback('likes', id);
-		});
-
-*/
